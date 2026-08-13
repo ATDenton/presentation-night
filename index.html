@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aaron &amp; Chloë Presentation Night</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>">
+<style>
+  :root{
+    --bg:#12101a;
+    --bg2:#1b1727;
+    --card:#221d33;
+    --card2:#2b2542;
+    --line:#3a3253;
+    --ink:#f2eefb;
+    --muted:#a79dc4;
+    --accent:#ffb454;     /* Aaron */
+    --accent2:#ff6b9d;    /* Chloë */
+    --ok:#6ee7a8;
+    --radius:16px;
+    --font:ui-rounded,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1100px 700px at 12% -10%, #3a2a5e 0%, transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, #5c2a48 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--font);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:28px 18px 80px}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .dot{width:38px;height:38px;border-radius:12px;flex:none;
+    background:linear-gradient(140deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-size:20px}
+  .brand h1{font-size:19px;margin:0;letter-spacing:-.01em}
+  .brand small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+  .whotag{font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);
+    padding:7px 8px 7px 14px;border-radius:999px;display:flex;align-items:center;gap:9px}
+  .whotag b{color:var(--ink)}
+  .live{width:8px;height:8px;border-radius:50%;background:#6b6482;flex:none}
+  .live.on{background:var(--ok);box-shadow:0 0 0 3px rgba(110,231,168,.18)}
+
+  .panel{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px}
+  .panel h2{margin:0 0 6px;font-size:19px}
+  .panel p.sub{margin:0 0 20px;color:var(--muted);font-size:13.5px;line-height:1.55}
+
+  button{font:inherit;cursor:pointer;border-radius:11px;border:1px solid transparent;transition:.15s}
+  button:disabled{opacity:.42;cursor:not-allowed}
+  .btn{background:linear-gradient(140deg,var(--accent),var(--accent2));color:#2a1305;font-weight:700;
+    padding:13px 22px;font-size:15px;border:none}
+  .btn:not(:disabled):hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
+  .btn.ghost:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:12.5px}
+
+  /* who-are-you */
+  .seats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:620px){.seats{grid-template-columns:1fr}}
+  .seat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:26px 20px;
+    color:var(--ink);cursor:pointer;display:block;width:100%;text-align:center}
+  .seat .who{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .seat .tag{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .seat[data-slot=a]:hover{border-color:var(--accent)}
+  .seat[data-slot=a]:hover .who{color:var(--accent)}
+  .seat[data-slot=b]:hover{border-color:var(--accent2)}
+  .seat[data-slot=b]:hover .who{color:var(--accent2)}
+
+  /* board */
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:720px){.board{grid-template-columns:1fr}}
+  .pcard{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;min-height:236px;
+    position:relative;overflow:hidden}
+  .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.35}
+  #cardA::before{background:var(--accent)}
+  #cardB::before{background:var(--accent2)}
+  .pcard.mine::before{opacity:1;height:4px}
+  .pcard.mine{border-color:rgba(255,255,255,.16)}
+  .pcard .name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+  .pcard .name .n{font-weight:800;font-size:16px;letter-spacing:-.01em}
+  #cardA .name .n{color:var(--accent)}
+  #cardB .name .n{color:var(--accent2)}
+  .pill{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .pill.you{color:var(--ink);border-color:rgba(255,255,255,.28)}
+  .topic{flex:1;display:flex;align-items:center;font-size:23px;line-height:1.32;font-weight:700;
+    letter-spacing:-.015em;min-height:96px;word-break:break-word}
+  .topic.empty{color:#635b7d;font-weight:600;font-size:17px;font-style:italic}
+  .topic.rolling{color:var(--muted);font-weight:600;font-size:19px;filter:blur(.25px)}
+  .stamp{font-size:11.5px;color:var(--muted);margin-top:14px;min-height:16px}
+
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+  .status{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
+
+  .roundbar{display:flex;align-items:baseline;gap:10px;margin:26px 0 14px}
+  .roundbar h2{margin:0;font-size:15px;letter-spacing:.02em}
+  .roundbar .meta{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  details.hist{margin-top:30px;border-top:1px solid var(--line);padding-top:18px}
+  details.hist summary{cursor:pointer;font-size:13.5px;color:var(--muted);list-style:none}
+  details.hist summary::-webkit-details-marker{display:none}
+  details.hist summary::before{content:"▸ ";color:var(--accent)}
+  details.hist[open] summary::before{content:"▾ "}
+  .hrow{display:grid;grid-template-columns:56px 1fr 1fr;gap:12px;padding:12px 0;
+    border-bottom:1px solid rgba(58,50,83,.5);font-size:13.5px;align-items:start}
+  .hrow .rn{color:var(--muted);font-family:ui-monospace,Menlo,monospace;font-size:12px;padding-top:2px}
+  .hrow b{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+  .hrow .ha b{color:var(--accent)} .hrow .hb b{color:var(--accent2)}
+  @media(max-width:620px){.hrow{grid-template-columns:44px 1fr}.hrow .hb{grid-column:2}}
+
+  .tools{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+  .err{background:rgba(255,107,157,.1);border:1px solid rgba(255,107,157,.4);color:#ffc4d8;
+    padding:13px 15px;border-radius:11px;font-size:13.5px;margin-bottom:18px;line-height:1.6}
+  .err code{background:rgba(0,0,0,.3);padding:2px 5px;border-radius:4px;font-size:12.5px}
+  .hint{font-size:12px;color:var(--muted);margin-top:16px;line-height:1.5;text-align:center}
+  .hide{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="dot">🎲</div>
+      <div>
+        <h1>Aaron &amp; Chloë Presentation Night</h1>
+        <small>one random topic each, every week</small>
+      </div>
+    </div>
+    <div class="whotag hide" id="whotag">
+      <span class="live" id="livedot"></span>
+      you're <b id="whoLabel"></b>
+      <button class="btn ghost sm" id="switchBtn">switch</button>
+    </div>
+  </header>
+
+  <div id="fatal"></div>
+
+  <!-- WHO ARE YOU -->
+  <section id="whopick" class="hide">
+    <div class="panel">
+      <h2>Who's on this screen?</h2>
+      <p class="sub">Pick yourself once and this device remembers. Whoever's on the other end picks the other one.</p>
+      <div class="seats">
+        <button class="seat" data-slot="a"><span class="who">Aaron</span><span class="tag">that's me</span></button>
+        <button class="seat" data-slot="b"><span class="who">Chloë</span><span class="tag">that's me</span></button>
+      </div>
+      <div class="hint">Tapped the wrong one? Hit “switch” up in the corner.</div>
+    </div>
+  </section>
+
+  <!-- BOARD -->
+  <section id="board" class="hide">
+    <div class="roundbar">
+      <h2 id="roundTitle">Week 1</h2>
+      <div class="meta" id="poolMeta"></div>
+    </div>
+
+    <div class="board">
+      <div class="pcard" id="cardA">
+        <div class="name"><span class="n">Aaron</span><span class="pill" id="pillA"></span></div>
+        <div class="topic empty" id="topicA">hasn't spun yet…</div>
+        <div class="stamp" id="stampA"></div>
+      </div>
+      <div class="pcard" id="cardB">
+        <div class="name"><span class="n">Chloë</span><span class="pill" id="pillB"></span></div>
+        <div class="topic empty" id="topicB">hasn't spun yet…</div>
+        <div class="stamp" id="stampB"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="spinBtn">Spin my topic</button>
+      <button class="btn ghost" id="nextBtn">Start next week</button>
+      <div class="status" id="statusMsg"></div>
+    </div>
+
+    <details class="hist">
+      <summary>Everything we've presented so far</summary>
+      <div id="histList" style="margin-top:12px"></div>
+    </details>
+
+    <div class="tools">
+      <button class="btn ghost sm" id="rerollBtn">Undo my spin (re-roll)</button>
+      <button class="btn ghost sm" id="resetUsedBtn">Put every topic back in the pool</button>
+    </div>
+  </section>
+
+</div>
+
+<script type="module">
+import { TOPICS } from "./topics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getDatabase, ref, onValue, runTransaction }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+/* ============================================================
+   Firebase project config. Already filled in — nothing to do here.
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyALkglA95XjLJNcJkATG0C6MQYzgksPF0U",
+  authDomain: "presentation-night-f6c0b.firebaseapp.com",
+  databaseURL: "https://presentation-night-f6c0b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "presentation-night-f6c0b",
+  storageBucket: "presentation-night-f6c0b.firebasestorage.app",
+  messagingSenderId: "265403823306",
+  appId: "1:265403823306:web:d4e2d82c06a755f108f033"
+};
+/* ========================================================== */
+
+const PEOPLE = { a: "Aaron", b: "Chloë" };
+const ROOM   = "aaron-and-chloe-presentation-night";
+
+const $ = id => document.getElementById(id);
+const fatal = msg => { $("fatal").innerHTML = `<div class="err">${msg}</div>`; };
+
+/* ---------- topic identity: stable hash, safe to reorder the list ---------- */
+const tid = s => {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return "t" + h.toString(36);
+};
+
+/* ---------- state ---------- */
+let db = null, roomRef = null;
+let mySlot = "";
+let room_data = null;
+const shown  = { a: null, b: null };     // topic text currently painted on each card
+const anim   = { a: 0, b: 0 };           // animation cancellation tokens
+const booted = { a: false, b: false };   // first paint is instant, not a spin
+
+const LS = {
+  get: () => { try { return JSON.parse(localStorage.getItem("presnight") || "{}"); } catch { return {}; } },
+  set: o => localStorage.setItem("presnight", JSON.stringify({ ...LS.get(), ...o }))
+};
+
+/* ---------- connect straight away ---------- */
+(function start() {
+  if (Object.values(FIREBASE_CONFIG).some(v => String(v).includes("PASTE_ME"))) {
+    return fatal(`<b>Not configured yet.</b><br>
+      Open <code>index.html</code> in a code editor, find <code>FIREBASE_CONFIG</code>, and paste
+      in the config object from your Firebase project. Walkthrough is in <code>README.md</code>.`);
+  }
+  try {
+    db = getDatabase(initializeApp(FIREBASE_CONFIG));
+  } catch (e) {
+    return fatal("Couldn't start Firebase: " + e.message);
+  }
+  roomRef = ref(db, "rooms/" + ROOM);
+  mySlot = LS.get().slot || "";
+
+  onValue(roomRef, snap => {
+    $("fatal").innerHTML = "";
+    $("livedot").classList.add("on");
+    room_data = snap.val() || { round: 1, players: {}, used: {}, log: {} };
+    render();
+  }, err => {
+    $("livedot").classList.remove("on");
+    fatal("The database turned us away: " + err.message +
+          "<br>Check the rules are published (README step 5) and that <code>databaseURL</code> is right.");
+  });
+})();
+
+/* ---------- picking who you are ---------- */
+document.querySelectorAll(".seat").forEach(btn => {
+  btn.addEventListener("click", () => setSlot(btn.dataset.slot));
+});
+function setSlot(slot) {
+  mySlot = slot;
+  LS.set({ slot });
+  runTransaction(roomRef, d => {
+    d = d || { round: 1, players: {}, used: {}, log: {} };
+    d.players = d.players || {};
+    d.players[slot] = { ...(d.players[slot] || {}), name: PEOPLE[slot] };
+    return d;
+  });
+  render();
+}
+$("switchBtn").addEventListener("click", () => {
+  mySlot = "";
+  LS.set({ slot: "" });
+  render();
+});
+
+/* ---------- spinning ---------- */
+$("spinBtn").addEventListener("click", async () => {
+  if (!mySlot) return;
+  $("spinBtn").disabled = true;
+  const res = await runTransaction(roomRef, d => {
+    d = d || { round: 1, players: {}, used: {}, log: {} };
+    d.players = d.players || {}; d.used = d.used || {};
+    const me = d.players[mySlot] || {};
+    if (me.topicId) return d;                       // already spun this week — no-op
+    const taken = new Set(Object.keys(d.used));
+    const other = d.players[mySlot === "a" ? "b" : "a"];
+    if (other?.topicId) taken.add(other.topicId);   // never hand you both the same one
+    const pool = TOPICS.filter(t => !taken.has(tid(t)));
+    if (!pool.length) return d;                     // exhausted
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    const id = tid(pick);
+    d.players[mySlot] = { ...me, name: PEOPLE[mySlot], topicId: id, topic: pick, spunAt: Date.now() };
+    d.used[id] = true;
+    return d;
+  });
+  if (!res.snapshot.val()?.players?.[mySlot]?.topicId) {
+    // pool exhausted — re-enable so they can spin again after clearing the used list
+    $("statusMsg").textContent = "Every topic's been used! Put them back in the pool, or add more to topics.js.";
+    $("spinBtn").disabled = false;
+  }
+});
+
+/* ---------- next week ---------- */
+$("nextBtn").addEventListener("click", () => {
+  const p = room_data?.players || {};
+  if (!(p.a?.topicId && p.b?.topicId) &&
+      !confirm("You haven't both spun yet. Move on to next week anyway?")) return;
+  runTransaction(roomRef, d => {
+    if (!d) return d;
+    d.log = d.log || {};
+    const n = d.round || 1;
+    d.log["r" + String(n).padStart(4, "0")] = {
+      round: n, endedAt: Date.now(),
+      a: { name: PEOPLE.a, topic: d.players?.a?.topic || "—" },
+      b: { name: PEOPLE.b, topic: d.players?.b?.topic || "—" }
+    };
+    d.round = n + 1;
+    for (const s of ["a", "b"]) if (d.players?.[s]) d.players[s] = { name: PEOPLE[s] };
+    return d;
+  });
+});
+
+/* ---------- re-roll / reset ---------- */
+$("rerollBtn").addEventListener("click", () => {
+  if (!mySlot || !room_data?.players?.[mySlot]?.topicId) return;
+  if (!confirm("Undo your spin? Your topic goes back in the pool and you spin again.")) return;
+  runTransaction(roomRef, d => {
+    if (!d?.players?.[mySlot]) return d;
+    const id = d.players[mySlot].topicId;
+    if (id && d.used) delete d.used[id];
+    d.players[mySlot] = { name: PEOPLE[mySlot] };
+    return d;
+  });
+});
+
+$("resetUsedBtn").addEventListener("click", () => {
+  if (!confirm("Put every topic back in the pool? Old topics become available again. Your history is kept.")) return;
+  runTransaction(roomRef, d => {
+    if (!d) return d;
+    d.used = {};
+    for (const s of ["a", "b"]) if (d.players?.[s]?.topicId) d.used[d.players[s].topicId] = true;
+    return d;
+  });
+});
+
+/* ---------- slot-machine animation ---------- */
+function rollTo(slot, finalText) {
+  const el = $("topic" + slot.toUpperCase());
+  const token = ++anim[slot];
+  const start = performance.now(), DUR = 2400;
+  el.classList.remove("empty");
+  el.classList.add("rolling");
+
+  const land = () => {
+    if (token !== anim[slot]) return;                 // a newer roll took over
+    anim[slot]++;                                     // stop this one's rAF loop
+    el.classList.remove("rolling");
+    el.textContent = finalText;
+    el.animate(
+      [{ transform: "scale(.94)", opacity: .4 }, { transform: "scale(1.02)", opacity: 1 }, { transform: "scale(1)" }],
+      { duration: 420, easing: "cubic-bezier(.2,1.4,.4,1)" }
+    );
+  };
+  // Safety net: rAF is suspended in background tabs, so a roll that starts while
+  // this screen is hidden would otherwise freeze on a random topic. Timers still fire.
+  setTimeout(land, DUR + 200);
+
+  (function frame(now) {
+    if (token !== anim[slot]) return;                 // superseded
+    if (now - start >= DUR) return land();
+    const eased = 1 - Math.pow(1 - (now - start) / DUR, 3);   // slow down towards the end
+    const gap = 45 + eased * 320;
+    if (now - (frame.last || 0) > gap) {
+      el.textContent = TOPICS[Math.floor(Math.random() * TOPICS.length)];
+      frame.last = now;
+    }
+    requestAnimationFrame(frame);
+  })(start);
+}
+
+function paint(slot, topic) {
+  const el = $("topic" + slot.toUpperCase());
+  const first = !booted[slot];
+  booted[slot] = true;
+  if (!first && shown[slot] === (topic || null)) return;
+  shown[slot] = topic || null;
+  if (topic) {
+    // animate only for topics that land while we're watching, not on page load
+    if (first) { anim[slot]++; el.classList.remove("empty", "rolling"); el.textContent = topic; }
+    else rollTo(slot, topic);
+  } else {
+    anim[slot]++;                                     // cancel any running roll
+    el.classList.remove("rolling");
+    el.classList.add("empty");
+    el.textContent = "hasn't spun yet…";
+  }
+}
+
+/* ---------- render ---------- */
+function render() {
+  const d = room_data || {};
+  const players = d.players || {};
+
+  $("whoLabel").textContent = PEOPLE[mySlot] || "";
+  $("whotag").classList.toggle("hide", !mySlot);
+
+  if (!mySlot) {
+    $("whopick").classList.remove("hide");
+    $("board").classList.add("hide");
+    return;
+  }
+  $("whopick").classList.add("hide");
+  $("board").classList.remove("hide");
+
+  $("roundTitle").textContent = "Week " + (d.round || 1);
+  const usedCount = Object.keys(d.used || {}).length;
+  $("poolMeta").textContent = `${TOPICS.length - usedCount} of ${TOPICS.length} topics left in the pool`;
+
+  for (const slot of ["a", "b"]) {
+    const p = players[slot] || {};
+    const S = slot.toUpperCase();
+    $("card" + S).classList.toggle("mine", slot === mySlot);
+    $("pill" + S).textContent = slot === mySlot ? "you" : "them";
+    $("pill" + S).classList.toggle("you", slot === mySlot);
+    $("stamp" + S).textContent = p.spunAt ? "spun " + new Date(p.spunAt).toLocaleString() : "";
+    paint(slot, p.topic);
+  }
+
+  const mine = players[mySlot]?.topicId;
+  const them = mySlot === "a" ? "b" : "a";
+  const theirs = players[them]?.topicId;
+  $("spinBtn").disabled = !!mine;
+  $("spinBtn").textContent = mine ? "You've spun" : "Spin my topic";
+  $("rerollBtn").classList.toggle("hide", !mine);
+  $("statusMsg").textContent =
+    mine && theirs ? "You're both in — go make some slides." :
+    mine ? `Waiting on ${PEOPLE[them]}…` :
+    theirs ? `${PEOPLE[them]} has spun. Your turn.` : "Neither of you has spun yet.";
+
+  const log = Object.values(d.log || {}).sort((x, y) => y.round - x.round);
+  $("histList").innerHTML = log.length
+    ? log.map(e => `<div class="hrow">
+        <div class="rn">wk ${e.round}</div>
+        <div class="ha"><b>${esc(PEOPLE.a)}</b>${esc(e.a.topic)}</div>
+        <div class="hb"><b>${esc(PEOPLE.b)}</b>${esc(e.b.topic)}</div>
+      </div>`).join("")
+    : `<div class="hint" style="text-align:left">Nothing here yet — finished weeks land here when you hit “Start next week”.</div>`;
+}
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+</script>
+</body>
+</html>
