@@ -148,6 +148,8 @@ export const TOPICS = [
   "The Dunning–Kruger effect",
   "How do people learn a second language?",
   "The psychology of collecting",
+  "The house money effect",
+  " The illusion of transparency",
 
   // — Places & geography —
   "The country that no longer exists (pick one)",
@@ -185,15 +187,6 @@ export const TOPICS = [
   "The year you were born: what else was happening",
   "A full tour of a city you've never been to but want us to go to",
   "Make the case for your most controversial opinion",
-  "The complete history of a food we both love",
-  "Explain what you do all day to a five-year-old, with slides",
-  "A biography of someone else with your name",
-  "Somewhere within an hour of you that neither of us knows about",
-  "Rank every place we've been to together, with justification",
-  "A full itinerary for our ideal day out, costed",
-  "Present the other person's favourite thing as if you're an expert in it",
-  "The history of the town you grew up in",
+  "The history of the town/village you grew up in",
   "Sell me on a hobby you want us both to take up",
-  "Your top five of something, defended properly",
-  "A film or show the other person hasn't seen, pitched hard",
 ];
