@@ -58,6 +58,9 @@ export const TOPICS = [
   "The Great Stink of London",
   "How the Titanic sank, minute by minute",
   "The rise and fall of the Aztec capital",
+  " The Opium wars",
+  "The congo free state",
+  "How famines are usually distribution failures, not food shortages",
 
   // — Culture, food, and everyday things —
   "The history of the QWERTY keyboard",
@@ -150,6 +153,7 @@ export const TOPICS = [
   "The psychology of collecting",
   "The house money effect",
   " The illusion of transparency",
+  "The illusion of explanatory depth",
 
   // — Places & geography —
   "The country that no longer exists (pick one)",
