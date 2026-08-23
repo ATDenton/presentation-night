@@ -19,7 +19,10 @@ rather than being told about it.
 
 When the night's done, **Start next week** files both topics into the history and clears the
 board for the next one. Everything either of us has ever presented is kept in **Memory lane**
-below the board — one column each, week by week, forever.
+below the board — one column each, week by week, forever — and each entry can hold a link to
+the actual deck we presented from: hover a week and hit the 📎 to paste a Google Slides /
+Drive / anywhere URL. The topic becomes a clickable link. (The site's free hosting can't store
+uploaded files, so Memory lane remembers *where the deck lives* rather than the file itself.)
 
 The whole page stretches to fill the screen now: taller cards, a memory section that grows
 with the collection, no dead space at the bottom.
@@ -60,10 +63,11 @@ tabs — without it, a topic landing while your tab was hidden would freeze mid-
 segments show emojis rather than topic text (topics are far too long to fit on a wedge); the
 real topic is revealed when it stops.
 
-The cursor trail is a tiny Eulerian fluid sim: moving the pointer injects velocity into a
-coarse grid, and droplets are advected through that field with drag and dissipation — so the
-ink swirls and curls like liquid rather than just following you. It takes its colour from
-whoever is signed in on that screen. All motion respects `prefers-reduced-motion`.
+The cursor trail is a proper Navier–Stokes fluid simulation running on the GPU (WebGL2):
+the pointer injects velocity into a velocity field, which is advected, pressure-projected and
+spun up with vorticity confinement — so moving the mouse tears open the surface of the page
+like water, dragging luminescent dye in whoever's colour is signed in. Browsers without WebGL2
+fall back to a lightweight particle stream. All motion respects `prefers-reduced-motion`.
 
 Chosen identity lives in `localStorage`; everything else lives in the database, so the board
 looks the same on a laptop, a phone, or a browser you've never opened it in before.
