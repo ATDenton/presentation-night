@@ -49,7 +49,7 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  canvas.fluid{position:fixed;inset:0;z-index:35;pointer-events:none;mix-blend-mode:screen}
+  canvas.fluid{position:fixed;inset:0;z-index:0;pointer-events:none}
 
   .wrap{position:relative;z-index:2;max-width:1040px;margin:0 auto;padding:30px 20px 48px;
     min-height:100svh;display:flex;flex-direction:column}
@@ -530,11 +530,10 @@ const FLUID = (() => {
   const CFG = {
     SIM_RES: MOBILE ? 96 : 160,
     DYE_RES: MOBILE ? 512 : 1024,
-    VEL_DISS: 0.18, DYE_DISS: 1.05,
+    VEL_DISS: 0.28, DYE_DISS: 1.35,
     PRESSURE: 0.8, PRESSURE_ITER: MOBILE ? 22 : 28,
-    CURL: 24,
-    SPLAT_RADIUS: 0.0023,
-    SPLAT_FORCE: 6000
+    CURL: 18,
+    SPLAT_RADIUS: 0.0023
   };
 
   const VERT = `#version 300 es
@@ -651,20 +650,43 @@ void main(){
 
   const F_DISPLAY = `#version 300 es
 precision highp float; precision highp sampler2D;
-in vec2 vUv, vL, vR, vT, vB; out vec4 frag;
-uniform sampler2D uTexture; uniform vec2 texelSize;
+in vec2 vUv, vL, vR, vT, vB;
+out vec4 frag;
+uniform sampler2D uTexture, uVelocity;
+uniform vec2 texelSize;
+uniform float uTime, uAspect;
+
+/* the page background, rendered here so the flow can warp it */
+vec3 aurora(vec2 p){
+  vec3 col = vec3(0.040, 0.068, 0.126);
+  vec2 q;
+  q = p - vec2(0.14 + 0.10*sin(uTime*0.043       ), 1.18 + 0.08*sin(uTime*0.031));
+  col += vec3(0.10, 0.24, 0.48) * 0.60 * exp(-dot(q,q)*3.2);
+  q = p - vec2(1.05 + 0.09*sin(uTime*0.037 + 2.1), 1.16 + 0.07*sin(uTime*0.027 + 1.0));
+  col += vec3(0.46, 0.21, 0.10) * 0.52 * exp(-dot(q,q)*3.6);
+  q = p - vec2(0.58 + 0.08*sin(uTime*0.023 + 4.0), -0.28 + 0.06*sin(uTime*0.019));
+  col += vec3(0.08, 0.27, 0.33) * 0.42 * exp(-dot(q,q)*4.0);
+  return col;
+}
+
 void main(){
-  vec3 c   = texture(uTexture, vUv).rgb;
+  /* the water distorts whatever is behind it */
+  vec2 vel = texture(uVelocity, vUv).xy;
+  vec2 wuv = clamp(vUv + vel * 0.00065, 0.0, 1.0);
+  vec3 c = aurora(vec2(wuv.x * uAspect, wuv.y));
+
+  /* luminescent dye, lit by its own gradient */
+  vec3 d = texture(uTexture, vUv).rgb;
   float lc = length(texture(uTexture, vL).rgb);
   float rc = length(texture(uTexture, vR).rgb);
   float tc = length(texture(uTexture, vT).rgb);
   float bc = length(texture(uTexture, vB).rgb);
   vec3 n = normalize(vec3(rc - lc, tc - bc, length(texelSize)));
   float light = clamp(dot(n, vec3(0.35, 0.4, 1.0)) + 0.72, 0.72, 1.25);
-  c *= light;
-  c = 1.45 * pow(c, vec3(0.82));
-  float a = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
-  frag = vec4(c, a);
+  d *= light;
+  d = 1.30 * pow(max(d, 0.0), vec3(0.85));
+
+  frag = vec4(c + d, 1.0);
 }`;
 
   function sh(type, src) {
@@ -842,10 +864,13 @@ void main(){
     gl.disable(gl.SCISSOR_TEST);
   }
 
-  function render() {
+  function render(t) {
     P_disp.bind();
     gl.uniform2f(P_disp.u.texelSize, 1 / dye.read.w, 1 / dye.read.h);
+    gl.uniform1f(P_disp.u.uAspect, canvas.width / canvas.height);
+    gl.uniform1f(P_disp.u.uTime, t);
     gl.uniform1i(P_disp.u.uTexture, dye.read.attach(0));
+    gl.uniform1i(P_disp.u.uVelocity, velocity.read.attach(1));
     blit(null);
   }
 
@@ -853,25 +878,25 @@ void main(){
     const ar = canvas.width / canvas.height;
     return ar > 1 ? r * ar : r;
   }
-  function splatStep(x, y, dx, dy) {
+  function splatStep(x, y, vx, vy, ink, rad) {
     const col = hexRgb(trailHex);
     P_splat.bind();
     gl.uniform1f(P_splat.u.aspectRatio, canvas.width / canvas.height);
     gl.uniform2f(P_splat.u.point, x, y);
 
-    gl.uniform1f(P_splat.u.radius, correctRadius(CFG.SPLAT_RADIUS * 1.6));
+    gl.uniform1f(P_splat.u.radius, correctRadius(rad * 1.6));
     gl.uniform1i(P_splat.u.uTarget, velocity.read.attach(0));
-    gl.uniform3f(P_splat.u.color, dx, dy, 0);
+    gl.uniform3f(P_splat.u.color, vx, vy, 0);
     blit(velocity.write); velocity.swap();
 
-    gl.uniform1f(P_splat.u.radius, correctRadius(CFG.SPLAT_RADIUS * 0.9));
+    gl.uniform1f(P_splat.u.radius, correctRadius(rad * 0.9));
     gl.uniform1i(P_splat.u.uTarget, dye.read.attach(0));
-    gl.uniform3f(P_splat.u.color, col.r * .16, col.g * .16, col.b * .16);
+    gl.uniform3f(P_splat.u.color, col.r * ink, col.g * ink, col.b * ink);
     blit(dye.write); dye.swap();
   }
 
-  /* one splat per pointer event keeps the trail a continuous ribbon
-     instead of the blobby dots an accumulator produces */
+  /* slow moves just part the water; only fast ones break it open.
+     force, radius and ink all scale with pointer speed (smoothstep) */
   const queue = [];
   let px = null, py = null;
   addEventListener("pointermove", e => {
@@ -894,16 +919,24 @@ void main(){
     last = now;
     while (queue.length) {
       const q = queue.shift();
-      splatStep(q.x, q.y, q.dx * CFG.SPLAT_FORCE, q.dy * CFG.SPLAT_FORCE);
+      const sp = Math.hypot(q.dx, q.dy);
+      let s = Math.min(sp / 0.02, 1);
+      s = s * s * (3 - 2 * s);
+      splatStep(q.x, q.y,
+                q.dx * (2600 + 4200 * s),
+                q.dy * (2600 + 4200 * s),
+                0.05 + 0.20 * Math.pow(s, 1.25),
+                CFG.SPLAT_RADIUS * (1.15 + 1.5 * s));
     }
     step(dt);
-    render();
+    render(now / 1000);
   })(last);
 
   setTimeout(() => {
-    for (let i = 0; i < 3; i++)
-      splatStep(.3 + Math.random() * .4, .35 + Math.random() * .3,
-                (Math.random() - .5) * 140, (Math.random() - .5) * 140);
+    for (let i = 0; i < 2; i++)
+      splatStep(.35 + Math.random() * .3, .4 + Math.random() * .25,
+                (Math.random() - .5) * 70, (Math.random() - .5) * 70,
+                .06, CFG.SPLAT_RADIUS * 1.3);
   }, 500);
 
   return true;
