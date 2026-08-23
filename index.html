@@ -10,17 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,450..700;1,9..144,450..700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#100d18;
-    --bg2:#181428;
-    --card:rgba(41,33,64,.66);
-    --card2:rgba(53,43,82,.6);
-    --line:rgba(255,255,255,.09);
-    --line2:rgba(255,255,255,.18);
-    --ink:#f4f0fc;
-    --muted:#a89ec6;
-    --accent:#ffb454;     /* Aaron */
-    --accent2:#ff6b9d;    /* Chloë */
-    --violet:#8b7cf6;
+    --bg:#0a1120;
+    --bg2:#0f1830;
+    --card:rgba(22,34,58,.62);
+    --card2:rgba(30,45,74,.55);
+    --line:rgba(150,195,255,.10);
+    --ink:#eef4ff;
+    --muted:#8fa3c8;
+    --accent:#7cc0ff;     /* Aaron — sky blue */
+    --accent2:#ffb083;    /* Chloë — peach, blue's complement */
+    --accent3:#b79cff;    /* nobody yet — violet between the two */
     --ok:#6ee7a8;
     --radius:20px;
     --font:ui-rounded,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
@@ -32,55 +31,57 @@
     background:var(--bg);
     color:var(--ink);
     font-family:var(--font);
-    min-height:100vh;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
 
   /* ---- aurora sky ---- */
   .sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-  .sky span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.42;will-change:transform}
-  .sky .s1{width:56vmax;height:56vmax;left:-18vmax;top:-20vmax;background:#4a2f86;animation:drift1 26s ease-in-out infinite alternate}
-  .sky .s2{width:48vmax;height:48vmax;right:-16vmax;top:-14vmax;background:#8c2a55;animation:drift2 31s ease-in-out infinite alternate}
-  .sky .s3{width:40vmax;height:40vmax;left:30vw;bottom:-24vmax;background:#1d4f63;opacity:.3;animation:drift3 37s ease-in-out infinite alternate}
+  .sky span{position:absolute;border-radius:50%;filter:blur(95px);opacity:.4;will-change:transform}
+  .sky .s1{width:56vmax;height:56vmax;left:-18vmax;top:-20vmax;background:#16386e;animation:drift1 26s ease-in-out infinite alternate}
+  .sky .s2{width:48vmax;height:48vmax;right:-16vmax;top:-14vmax;background:#6e3a1d;animation:drift2 31s ease-in-out infinite alternate}
+  .sky .s3{width:40vmax;height:40vmax;left:30vw;bottom:-24vmax;background:#123c4a;opacity:.32;animation:drift3 37s ease-in-out infinite alternate}
   @keyframes drift1{to{transform:translate3d(9vmax,7vmax,0) scale(1.12)}}
   @keyframes drift2{to{transform:translate3d(-8vmax,9vmax,0) scale(1.08)}}
   @keyframes drift3{to{transform:translate3d(6vmax,-8vmax,0) scale(1.15)}}
-  body::after{ /* grain */
+  body::after{
     content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  .wrap{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:28px 18px 80px}
+  canvas.fluid{position:fixed;inset:0;z-index:35;pointer-events:none;mix-blend-mode:screen}
 
-  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+  .wrap{position:relative;z-index:2;max-width:1040px;margin:0 auto;padding:30px 20px 48px;
+    min-height:100svh;display:flex;flex-direction:column}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:34px}
   .brand{display:flex;align-items:center;gap:14px}
-  .brand .dot{width:46px;height:46px;border-radius:15px;flex:none;
+  .brand .dot{width:48px;height:48px;border-radius:15px;flex:none;
     background:linear-gradient(140deg,var(--accent),var(--accent2));
-    display:grid;place-items:center;font-size:24px;
-    box-shadow:0 10px 28px -8px rgba(255,130,120,.55), inset 0 2px 0 rgba(255,255,255,.4)}
-  .brand h1{font-family:var(--display);font-weight:600;font-size:22px;margin:0;letter-spacing:-.01em}
+    display:grid;place-items:center;font-size:25px;
+    box-shadow:0 10px 30px -8px rgba(124,192,255,.5), inset 0 2px 0 rgba(255,255,255,.4)}
+  .brand h1{font-family:var(--display);font-weight:600;font-size:23px;margin:0;letter-spacing:-.01em}
   .brand small{display:block;color:var(--muted);font-weight:500;font-size:12.5px;margin-top:3px}
   .whotag{font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     padding:7px 8px 7px 14px;border-radius:999px;display:flex;align-items:center;gap:9px}
   .whotag b{color:var(--ink)}
-  .live{width:8px;height:8px;border-radius:50%;background:#6b6482;flex:none;transition:.3s}
+  .live{width:8px;height:8px;border-radius:50%;background:#5b6b8c;flex:none;transition:.3s}
   .live.on{background:var(--ok);box-shadow:0 0 0 3px rgba(110,231,168,.18)}
 
   .panel{background:var(--card);border:1px solid var(--line);
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-radius:var(--radius);padding:28px;
+    border-radius:var(--radius);padding:30px;width:min(600px,100%);
     box-shadow:0 24px 60px -24px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.06)}
-  .panel h2{font-family:var(--display);font-weight:600;margin:0 0 6px;font-size:21px}
-  .panel p.sub{margin:0 0 22px;color:var(--muted);font-size:13.5px;line-height:1.55}
+  .panel h2{font-family:var(--display);font-weight:600;margin:0 0 6px;font-size:22px}
+  .panel p.sub{margin:0 0 24px;color:var(--muted);font-size:13.5px;line-height:1.55}
 
   button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid transparent;transition:.18s}
   button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
   button:disabled{opacity:.42;cursor:not-allowed}
-  .btn{background:linear-gradient(140deg,var(--accent),var(--accent2));color:#2a1305;font-weight:700;
-    padding:13px 24px;font-size:15px;border:none;
-    box-shadow:0 12px 28px -10px rgba(255,110,140,.5), inset 0 1px 0 rgba(255,255,255,.35)}
+  .btn{background:linear-gradient(140deg,var(--accent),var(--accent2));color:#041225;font-weight:700;
+    padding:14px 26px;font-size:15px;border:none;
+    box-shadow:0 12px 30px -10px rgba(124,170,255,.45), inset 0 1px 0 rgba(255,255,255,.4)}
   .btn:not(:disabled):hover{filter:brightness(1.07);transform:translateY(-1px)}
   .btn:not(:disabled):active{transform:translateY(0) scale(.98)}
   .btn.ghost{background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line);font-weight:600}
@@ -88,69 +89,76 @@
   .btn.sm{padding:8px 14px;font-size:12.5px}
 
   /* who-are-you */
-  .seats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  #whopick{flex:1;display:grid;place-items:center}
+  .seats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:620px){.seats{grid-template-columns:1fr}}
   .seat{background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-radius:16px;padding:30px 20px;color:var(--ink);cursor:pointer;display:block;width:100%;text-align:center;
+    border-radius:16px;padding:38px 20px;color:var(--ink);cursor:pointer;display:block;width:100%;text-align:center;
     box-shadow:0 16px 40px -20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.07)}
-  .seat .who{display:block;font-family:var(--display);font-size:29px;font-weight:600;letter-spacing:-.02em}
-  .seat .tag{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:9px}
-  .seat[data-slot=a]:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 20px 44px -18px rgba(255,180,84,.35)}
+  .seat .who{display:block;font-family:var(--display);font-size:31px;font-weight:600;letter-spacing:-.02em}
+  .seat .tag{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+  .seat[data-slot=a]:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 20px 46px -18px rgba(124,192,255,.4)}
   .seat[data-slot=a]:hover .who{color:var(--accent)}
-  .seat[data-slot=b]:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 20px 44px -18px rgba(255,107,157,.35)}
+  .seat[data-slot=b]:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 20px 46px -18px rgba(255,176,131,.4)}
   .seat[data-slot=b]:hover .who{color:var(--accent2)}
 
   /* board */
-  .roundbar{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
-  .weekchip{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.02em;
-    background:linear-gradient(140deg,rgba(255,180,84,.16),rgba(255,107,157,.16));
-    border:1px solid rgba(255,160,140,.3);padding:6px 16px;border-radius:999px}
+  #board{flex:1;display:flex;flex-direction:column}
+  .roundbar{display:flex;align-items:center;gap:12px;margin:4px 0 20px}
+  .weekchip{font-family:var(--display);font-weight:600;font-size:15.5px;letter-spacing:.02em;
+    background:linear-gradient(140deg,rgba(124,192,255,.14),rgba(255,176,131,.14));
+    border:1px solid rgba(140,185,255,.32);padding:7px 17px;border-radius:999px}
   .roundbar .meta{font-size:12.5px;color:var(--muted);margin-left:auto}
 
-  .board{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   @media(max-width:720px){.board{grid-template-columns:1fr}}
   .pcard{background:var(--card);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;min-height:244px;
-    position:relative;overflow:hidden;
+    border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;
+    min-height:clamp(250px,33vh,330px);position:relative;overflow:hidden;
     box-shadow:0 24px 60px -26px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06);
     transition:border-color .3s}
-  .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.4}
+  .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.45}
   #cardA::before{background:linear-gradient(90deg,var(--accent),transparent)}
   #cardB::before{background:linear-gradient(270deg,var(--accent2),transparent)}
   .pcard.mine::before{opacity:1;height:4px}
-  .pcard.mine{border-color:rgba(255,255,255,.17)}
-  .pcard .name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px}
-  .pcard .name .n{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .pcard.mine{border-color:rgba(190,215,255,.18)}
+  .pcard .name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:18px}
+  .pcard .name .n{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.01em}
   #cardA .name .n{color:var(--accent)}
   #cardB .name .n{color:var(--accent2)}
   .pill{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
     border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap}
-  .pill.you{color:var(--ink);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.05)}
+  .pill.you{color:var(--ink);border-color:rgba(190,215,255,.32);background:rgba(255,255,255,.05)}
   .topic{flex:1;display:flex;align-items:center;font-family:var(--display);font-weight:550;
-    font-size:clamp(19px,2.3vw,25px);line-height:1.38;letter-spacing:-.01em;min-height:96px;word-break:break-word}
-  .topic.empty{color:#7d74a0;font-weight:450;font-style:italic;font-size:16.5px;font-family:var(--font)}
-  .stamp{font-size:11.5px;color:var(--muted);margin-top:14px;min-height:16px}
+    font-size:clamp(21px,2.6vw,29px);line-height:1.36;letter-spacing:-.01em;min-height:96px;word-break:break-word}
+  .topic.empty{color:#66759c;font-weight:450;font-style:italic;font-size:17px;font-family:var(--font)}
+  .stamp{font-size:11.5px;color:var(--muted);margin-top:16px;min-height:16px}
 
-  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 0}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:28px 0 0}
   .status{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
 
-  details.hist{margin-top:32px;border-top:1px solid var(--line);padding-top:20px}
-  details.hist summary{cursor:pointer;font-size:13.5px;color:var(--muted);list-style:none;transition:.2s}
-  details.hist summary:hover{color:var(--ink)}
-  details.hist summary::-webkit-details-marker{display:none}
-  details.hist summary::before{content:"▸ ";color:var(--accent)}
-  details.hist[open] summary::before{content:"▾ "}
-  .hrow{display:grid;grid-template-columns:56px 1fr 1fr;gap:14px;padding:14px 10px;margin:0 -10px;
-    border-bottom:1px solid rgba(255,255,255,.05);font-size:13.5px;align-items:start;border-radius:10px;transition:.15s}
-  .hrow:hover{background:rgba(255,255,255,.03)}
-  .hrow .rn{color:var(--muted);font-family:ui-monospace,Menlo,monospace;font-size:12px;padding-top:2px}
-  .hrow b{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
-  .hrow b::before{content:"";width:7px;height:7px;border-radius:50%;flex:none}
-  .hrow .ha b{color:var(--accent)} .hrow .ha b::before{background:var(--accent)}
-  .hrow .hb b{color:var(--accent2)} .hrow .hb b::before{background:var(--accent2)}
-  @media(max-width:620px){.hrow{grid-template-columns:44px 1fr}.hrow .hb{grid-column:2}}
+  /* memory lane */
+  .memory{flex:1;display:flex;flex-direction:column;margin-top:34px;border-top:1px solid var(--line);padding-top:24px}
+  .memory h2{font-family:var(--display);font-weight:600;font-size:17px;margin:0;letter-spacing:.01em}
+  .memcols{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:18px;align-content:start}
+  @media(max-width:720px){.memcols{grid-template-columns:1fr}}
+  .memcol{background:var(--card);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:var(--radius);padding:20px 22px;
+    box-shadow:0 18px 50px -26px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05)}
+  .memcol h3{font-family:var(--display);font-weight:600;font-size:16px;margin:0;display:flex;align-items:center;gap:8px}
+  .memcol h3::before{content:"";width:9px;height:9px;border-radius:50%}
+  #memA h3{color:var(--accent)} #memA h3::before{background:var(--accent);box-shadow:0 0 10px rgba(124,192,255,.7)}
+  #memB h3{color:var(--accent2)} #memB h3::before{background:var(--accent2);box-shadow:0 0 10px rgba(255,176,131,.7)}
+  .memcol ol{list-style:none;margin:10px 0 0;padding:0}
+  .memcol li{display:flex;gap:12px;align-items:baseline;padding:10px 2px;font-size:13.5px;line-height:1.45;
+    border-bottom:1px dashed rgba(150,195,255,.09)}
+  .memcol li:last-child{border-bottom:none}
+  .memcol li.skip span:last-child{color:#5d6c92;font-style:italic}
+  .memcol .wk{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);flex:none;
+    border:1px solid var(--line);border-radius:6px;padding:2px 6px;min-width:34px;text-align:center}
+  .memempty{color:var(--muted);font-size:13px;text-align:center;padding:26px 0;line-height:1.6}
 
-  .tools{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+  .tools{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
   .err{background:rgba(255,107,157,.1);border:1px solid rgba(255,107,157,.4);color:#ffc4d8;
     padding:13px 15px;border-radius:11px;font-size:13.5px;margin-bottom:18px;line-height:1.6}
   .err code{background:rgba(0,0,0,.3);padding:2px 5px;border-radius:4px;font-size:12.5px}
@@ -159,7 +167,7 @@
 
   /* ---- wheel overlay ---- */
   #wheelOverlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;
-    background:rgba(10,8,16,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    background:rgba(6,10,20,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     animation:fadein .3s ease}
   @keyframes fadein{from{opacity:0}}
   .wheelbox{text-align:center;padding:20px;max-width:94vw;animation:rise .45s cubic-bezier(.2,1.2,.4,1)}
@@ -172,7 +180,7 @@
   body.spinning .pointer{animation:tick .11s linear infinite alternate}
   @keyframes tick{from{transform:translateX(-50%) rotate(-9deg)}to{transform:translateX(-50%) rotate(9deg)}}
   #wheelSvg{width:100%;height:auto;display:block;
-    filter:drop-shadow(0 26px 70px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(139,124,246,.18))}
+    filter:drop-shadow(0 26px 70px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(124,192,255,.18))}
   .hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
     width:62px;height:62px;border-radius:50%;
     background:linear-gradient(140deg,var(--accent),var(--accent2));
@@ -214,14 +222,16 @@
 
   <!-- WHO ARE YOU -->
   <section id="whopick" class="hide">
-    <div class="panel">
-      <h2>Who's on this screen?</h2>
-      <p class="sub">Pick yourself once and this device remembers. Whoever's on the other end picks the other one.</p>
-      <div class="seats">
-        <button class="seat" data-slot="a"><span class="who">Aaron</span><span class="tag">that's me</span></button>
-        <button class="seat" data-slot="b"><span class="who">Chloë</span><span class="tag">that's me</span></button>
+    <div>
+      <div class="panel">
+        <h2>Who's on this screen?</h2>
+        <p class="sub">Pick yourself once and this device remembers. Whoever's on the other end picks the other one.</p>
+        <div class="seats">
+          <button class="seat" data-slot="a"><span class="who">Aaron</span><span class="tag">that's me</span></button>
+          <button class="seat" data-slot="b"><span class="who">Chloë</span><span class="tag">that's me</span></button>
+        </div>
+        <div class="hint">Tapped the wrong one? Hit “switch” up in the corner.</div>
       </div>
-      <div class="hint">Tapped the wrong one? Hit “switch” up in the corner.</div>
     </div>
   </section>
 
@@ -251,10 +261,24 @@
       <div class="status" id="statusMsg"></div>
     </div>
 
-    <details class="hist">
-      <summary>Everything we've presented so far</summary>
-      <div id="histList" style="margin-top:12px"></div>
-    </details>
+    <!-- MEMORY LANE -->
+    <section class="memory">
+      <div class="roundbar" style="margin:0">
+        <h2>Memory lane</h2>
+        <div class="meta" id="memMeta"></div>
+      </div>
+      <div class="memcols">
+        <div class="memcol" id="memA">
+          <h3>Aaron</h3>
+          <ol id="memListA"></ol>
+        </div>
+        <div class="memcol" id="memB">
+          <h3>Chloë</h3>
+          <ol id="memListB"></ol>
+        </div>
+      </div>
+      <div class="memempty hide" id="memEmpty">Nothing archived yet — finish a week with “Start next week” and it'll be remembered here.</div>
+    </section>
 
     <div class="tools">
       <button class="btn ghost sm" id="rerollBtn">Undo my spin (re-roll)</button>
@@ -286,9 +310,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
 import { getDatabase, ref, onValue, runTransaction }
   from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-/* ============================================================
-   Firebase project config. Already filled in — nothing to do here.
-   ============================================================ */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyALkglA95XjLJNcJkATG0C6MQYzgksPF0U",
   authDomain: "presentation-night-f6c0b.firebaseapp.com",
@@ -298,10 +319,10 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "265403823306",
   appId: "1:265403823306:web:d4e2d82c06a755f108f033"
 };
-/* ========================================================== */
 
 const PEOPLE = { a: "Aaron", b: "Chloë" };
 const ROOM   = "aaron-and-chloe-presentation-night";
+const TRAIL  = { a: "#7cc0ff", b: "#ffb083", none: "#b79cff" };
 
 const $ = id => document.getElementById(id);
 const fatal = msg => { $("fatal").innerHTML = `<div class="err">${msg}</div>`; };
@@ -314,25 +335,21 @@ const tid = s => {
   return "t" + h.toString(36);
 };
 
-/* ---------- state ---------- */
 let db = null, roomRef = null;
 let mySlot = "";
 let room_data = null;
-const shown  = { a: null, b: null };     // topic text currently painted on each card
-const anim   = { a: 0, b: 0 };           // animation cancellation tokens
-const booted = { a: false, b: false };   // first paint is instant, not a spin
+const shown  = { a: null, b: null };
+const anim   = { a: 0, b: 0 };
+const booted = { a: false, b: false };
 
 const LS = {
   get: () => { try { return JSON.parse(localStorage.getItem("presnight") || "{}"); } catch { return {}; } },
   set: o => localStorage.setItem("presnight", JSON.stringify({ ...LS.get(), ...o }))
 };
 
-/* ---------- connect straight away ---------- */
 (function start() {
   if (Object.values(FIREBASE_CONFIG).some(v => String(v).includes("PASTE_ME"))) {
-    return fatal(`<b>Not configured yet.</b><br>
-      Open <code>index.html</code> in a code editor, find <code>FIREBASE_CONFIG</code>, and paste
-      in the config object from your Firebase project. Walkthrough is in <code>README.md</code>.`);
+    return fatal("<b>Not configured yet.</b>");
   }
   try {
     db = getDatabase(initializeApp(FIREBASE_CONFIG));
@@ -354,7 +371,6 @@ const LS = {
   });
 })();
 
-/* ---------- picking who you are ---------- */
 document.querySelectorAll(".seat").forEach(btn => {
   btn.addEventListener("click", () => setSlot(btn.dataset.slot));
 });
@@ -375,7 +391,6 @@ $("switchBtn").addEventListener("click", () => {
   render();
 });
 
-/* ---------- spinning ---------- */
 $("spinBtn").addEventListener("click", async () => {
   if (!mySlot) return;
   $("spinBtn").disabled = true;
@@ -383,12 +398,12 @@ $("spinBtn").addEventListener("click", async () => {
     d = d || { round: 1, players: {}, used: {}, log: {} };
     d.players = d.players || {}; d.used = d.used || {};
     const me = d.players[mySlot] || {};
-    if (me.topicId) return d;                       // already spun this week — no-op
+    if (me.topicId) return d;
     const taken = new Set(Object.keys(d.used));
     const other = d.players[mySlot === "a" ? "b" : "a"];
-    if (other?.topicId) taken.add(other.topicId);   // never hand you both the same one
+    if (other?.topicId) taken.add(other.topicId);
     const pool = TOPICS.filter(t => !taken.has(tid(t)));
-    if (!pool.length) return d;                     // exhausted
+    if (!pool.length) return d;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     const id = tid(pick);
     d.players[mySlot] = { ...me, name: PEOPLE[mySlot], topicId: id, topic: pick, spunAt: Date.now() };
@@ -396,13 +411,11 @@ $("spinBtn").addEventListener("click", async () => {
     return d;
   });
   if (!res.snapshot.val()?.players?.[mySlot]?.topicId) {
-    // pool exhausted — re-enable so they can spin again after clearing the used list
     $("statusMsg").textContent = "Every topic's been used! Put them back in the pool, or add more to topics.js.";
     $("spinBtn").disabled = false;
   }
 });
 
-/* ---------- next week ---------- */
 $("nextBtn").addEventListener("click", () => {
   const p = room_data?.players || {};
   if (!(p.a?.topicId && p.b?.topicId) &&
@@ -422,7 +435,6 @@ $("nextBtn").addEventListener("click", () => {
   });
 });
 
-/* ---------- re-roll / reset ---------- */
 $("rerollBtn").addEventListener("click", () => {
   if (!mySlot || !room_data?.players?.[mySlot]?.topicId) return;
   if (!confirm("Undo your spin? Your topic goes back in the pool and you spin again.")) return;
@@ -446,17 +458,120 @@ $("resetUsedBtn").addEventListener("click", () => {
 });
 
 /* ============================================================
-   THE WHEEL
-   Plays on whichever screen sees a fresh topic arrive — so a spin
-   on one phone rolls out on both screens at once. Segments carry
-   emojis rather than topic text (topics are far too long to fit),
-   the real topic is revealed when the wheel stops.
+   LIQUID CURSOR TRAIL — a tiny Eulerian fluid.
+   Pointer motion injects velocity into a coarse grid; droplets
+   are advected through that field (bilinear sampling), drag
+   slows them and the field itself dissipates. Colour follows
+   whoever this screen is logged in as.
+   ============================================================ */
+const FLUID = (() => {
+  let currentColor = TRAIL.none;
+  const setTrailColor = c => { currentColor = c; };
+  if (!motionOK) return { setTrailColor };
+
+  const cv = document.createElement("canvas");
+  cv.className = "fluid";
+  document.body.appendChild(cv);
+  const ctx = cv.getContext("2d");
+  const DPR = Math.min(devicePixelRatio || 1, 1.5);
+  const CELL = 34;
+
+  let W = 0, H = 0, GW = 0, GH = 0, vx, vy;
+  function resize() {
+    W = innerWidth; H = innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    GW = Math.ceil(W / CELL) + 2;
+    GH = Math.ceil(H / CELL) + 2;
+    vx = new Float32Array(GW * GH);
+    vy = new Float32Array(GW * GH);
+  }
+  resize();
+  addEventListener("resize", resize);
+
+  function splat(x, y, fx, fy) {
+    const cx = Math.round(x / CELL), cy = Math.round(y / CELL), R = 2;
+    for (let j = -R; j <= R; j++) for (let i = -R; i <= R; i++) {
+      const gx = cx + i, gy = cy + j;
+      if (gx < 0 || gy < 0 || gx >= GW || gy >= GH) continue;
+      const f = 1 - Math.hypot(i, j) / (R + 1);
+      vx[gy * GW + gx] += fx * f;
+      vy[gy * GW + gx] += fy * f;
+    }
+  }
+
+  function sample(arr, x, y) {
+    const gx = Math.max(0, Math.min(GW - 1.001, x / CELL - .5));
+    const gy = Math.max(0, Math.min(GH - 1.001, y / CELL - .5));
+    const x0 = gx | 0, y0 = gy | 0;
+    const tx = gx - x0, ty = gy - y0;
+    return arr[y0*GW+x0]*(1-tx)*(1-ty) + arr[y0*GW+x0+1]*tx*(1-ty)
+         + arr[(y0+1)*GW+x0]*(1-tx)*ty + arr[(y0+1)*GW+x0+1]*tx*ty;
+  }
+
+  const P = [], MAXP = 850;
+  let px = null, py = null;
+
+  addEventListener("pointermove", e => {
+    const x = e.clientX, y = e.clientY;
+    if (px !== null) {
+      const dx = x - px, dy = y - py;
+      const sp = Math.hypot(dx, dy);
+      if (sp > .5) {
+        splat(x, y, dx * .16, dy * .16);
+        const n = Math.min(2 + (sp / 9 | 0), 6);
+        for (let k = 0; k < n && P.length < MAXP; k++)
+          P.push({
+            x: x + (Math.random() - .5) * 12,
+            y: y + (Math.random() - .5) * 12,
+            vx: dx * (.10 + Math.random() * .12) + (Math.random() - .5),
+            vy: dy * (.10 + Math.random() * .12) + (Math.random() - .5),
+            life: 1,
+            r: 2.2 + Math.random() * 3.4,
+            col: currentColor
+          });
+      }
+    }
+    px = x; py = y;
+  }, { passive: true });
+
+  (function frame() {
+    requestAnimationFrame(frame);
+    if (document.hidden) return;
+    for (let i = 0; i < vx.length; i++) { vx[i] *= .955; vy[i] *= .955; }
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = P.length - 1; i >= 0; i--) {
+      const p = P[i];
+      p.vx += sample(vx, p.x, p.y) * .16;
+      p.vy += sample(vy, p.x, p.y) * .16 + .012;
+      p.vx *= .965; p.vy *= .965;
+      p.x += p.vx; p.y += p.vy;
+      p.life -= .011;
+      if (p.life <= 0 || p.y > H + 24 || p.x < -24 || p.x > W + 24) { P.splice(i, 1); continue; }
+      const rad = p.r * (.45 + p.life * .75);
+      ctx.globalAlpha = p.life * p.life * .6;
+      ctx.fillStyle = p.col;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-over";
+  })();
+
+  return { setTrailColor };
+})();
+
+/* ============================================================
+   THE WHEEL — plays on whichever screen sees a fresh topic
+   arrive, so a spin on one phone rolls out on both at once.
    ============================================================ */
 const WHEEL_N     = 12;
 const SPIN_MS     = 4300;
 const WHEEL_EMOJI = ["🐙","🚀","🏛️","🧠","🎭","🌍","🎲","🔮","🍿","⚡","🗝️","🌈","🧪","🐉","🦖","🎪"];
-const SEG_COLORS  = ["#ffb454","#ff6b9d","#8b7cf6","#4cc9f0","#6ee7a8","#ffd166",
-                     "#f472b6","#a78bfa","#38bdf8","#fb7185","#facc15","#34d399"];
+const SEG_COLORS  = ["#7cc0ff","#ffb083","#b79cff","#67e8f9","#86efac","#fcd34d",
+                     "#93c5fd","#fda4af","#5eead4","#c4b5fd","#fbbf24","#7dd3fc"];
 
 let wheelToken = 0;
 
@@ -475,7 +590,7 @@ function buildWheel() {
   let paths = "", icons = "";
   for (let i = 0; i < WHEEL_N; i++)
     paths += `<path d="${wedgePath(146, i * step - step / 2, i * step + step / 2)}"
-      fill="${SEG_COLORS[i % SEG_COLORS.length]}" stroke="#14101f" stroke-width="2"/>`;
+      fill="${SEG_COLORS[i % SEG_COLORS.length]}" stroke="#0a1120" stroke-width="2"/>`;
   for (let i = 0; i < WHEEL_N; i++)
     icons += `<text x="150" y="47" transform="rotate(${i * step},150,150)"
       text-anchor="middle" dominant-baseline="central" font-size="30">${emojis[i]}</text>`;
@@ -517,7 +632,7 @@ function startWheel(slot, topic) {
     const landed = Math.round(((360 - norm) % 360) / step) % WHEEL_N;
     const wedge  = rot.querySelectorAll("path")[landed];
     if (wedge) { wedge.style.filter = "brightness(1.35)"; wedge.style.stroke = "#fff"; }
-    applyTopic(slot, topic);                          // card behind the overlay catches up
+    applyTopic(slot, topic);
     res.innerHTML = (slot === mySlot ? "You got:" : `${esc(PEOPLE[slot])} got:`) +
                     `<b>${esc(topic)}</b>`;
     res.classList.add("show");
@@ -529,7 +644,6 @@ function startWheel(slot, topic) {
   }, SPIN_MS + 150);
 }
 
-/* ---------- confetti ---------- */
 function burstConfetti() {
   if (!motionOK) return;
   const c = document.createElement("canvas");
@@ -539,13 +653,13 @@ function burstConfetti() {
   c.width = W * dpr; c.height = H * dpr;
   const ctx = c.getContext("2d");
   ctx.scale(dpr, dpr);
-  const COLORS = ["#ffb454", "#ff6b9d", "#8b7cf6", "#6ee7a8", "#ffd166", "#4cc9f0"];
+  const COLORS = ["#7cc0ff", "#ffb083", "#b79cff", "#6ee7a8", "#fcd34d", "#67e8f9"];
   const parts = Array.from({ length: 130 }, () => ({
     x: W / 2 + (Math.random() - .5) * 60,
     y: H * .38,
     vx: (Math.random() - .5) * 15,
     vy: -5 - Math.random() * 9,
-    g: .22 + Math.random() *.09,
+    g: .22 + Math.random() * .09,
     s: 4 + Math.random() * 5,
     r: Math.random() * Math.PI * 2,
     vr: (Math.random() - .5) * .3,
@@ -571,7 +685,6 @@ function burstConfetti() {
   })(t0);
 }
 
-/* ---------- card painting ---------- */
 function applyTopic(slot, topic) {
   anim[slot]++;
   const el = $("topic" + slot.toUpperCase());
@@ -591,20 +704,19 @@ function paint(slot, topic) {
   shown[slot] = topic || null;
   if (!first && prev === (topic || null)) return;
   if (topic) {
-    // wheel only for reveals that happen while we're watching, not on page load
     if (first || !motionOK) applyTopic(slot, topic);
     else startWheel(slot, topic);
   } else {
-    anim[slot]++;                                     // cancel anything running
+    anim[slot]++;
     el.classList.add("empty");
     el.textContent = "hasn't spun yet…";
   }
 }
 
-/* ---------- render ---------- */
 function render() {
   const d = room_data || {};
   const players = d.players || {};
+  FLUID.setTrailColor(mySlot ? TRAIL[mySlot] : TRAIL.none);
 
   $("whoLabel").textContent = PEOPLE[mySlot] || "";
   $("whotag").classList.toggle("hide", !mySlot);
@@ -642,14 +754,20 @@ function render() {
     mine ? `Waiting on ${PEOPLE[them]}…` :
     theirs ? `${PEOPLE[them]} has spun. Your turn.` : "Neither of you has spun yet.";
 
+  /* memory lane */
   const log = Object.values(d.log || {}).sort((x, y) => y.round - x.round);
-  $("histList").innerHTML = log.length
-    ? log.map(e => `<div class="hrow">
-        <div class="rn">wk ${e.round}</div>
-        <div class="ha"><b>${esc(PEOPLE.a)}</b>${esc(e.a.topic)}</div>
-        <div class="hb"><b>${esc(PEOPLE.b)}</b>${esc(e.b.topic)}</div>
-      </div>`).join("")
-    : `<div class="hint" style="text-align:left">Nothing here yet — finished weeks land here when you hit “Start next week”.</div>`;
+  $("memMeta").textContent =
+    log.length ? `${log.length} week${log.length === 1 ? "" : "s"} on record` : "";
+  $("memEmpty").classList.toggle("hide", log.length > 0);
+  const memRow = (round, t) => {
+    const skip = !t || t === "—";
+    return `<li${skip ? ' class="skip"' : ""}><span class="wk">wk ${round}</span>` +
+           `<span>${esc(skip ? "no topic that week" : t)}</span></li>`;
+  };
+  let htmlA = "", htmlB = "";
+  for (const e of log) { htmlA += memRow(e.round, e.a.topic); htmlB += memRow(e.round, e.b.topic); }
+  $("memListA").innerHTML = htmlA;
+  $("memListB").innerHTML = htmlB;
 }
 
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

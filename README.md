@@ -7,8 +7,9 @@ the other over video call.
 
 ## How it works
 
-Open the link, tap your name once, and the device remembers you from then on. Aaron is amber,
-Chloë is pink — the colours carry through the cards and the history.
+Open the link, tap your name once, and the device remembers you from then on. Aaron is sky
+blue, Chloë is peach — blue's complementary colour — and the two carry through the cards,
+the history, and the liquid trail that follows your cursor (violet while nobody's signed in).
 
 Hit **Spin the wheel** and a prize wheel takes over both screens — it rattles up to speed,
 clatters to a stop with a tick-tick-tick of the pointer, and lands on your topic with a
@@ -17,7 +18,11 @@ the same time — so if one of us spins mid-call, the other watches it land in r
 rather than being told about it.
 
 When the night's done, **Start next week** files both topics into the history and clears the
-board for the next one.
+board for the next one. Everything either of us has ever presented is kept in **Memory lane**
+below the board — one column each, week by week, forever.
+
+The whole page stretches to fill the screen now: taller cards, a memory section that grows
+with the collection, no dead space at the bottom.
 
 | | |
 |---|---|
@@ -54,6 +59,11 @@ transition with a timer fallback, because browsers suspend animation frames in b
 tabs — without it, a topic landing while your tab was hidden would freeze mid-spin. The wheel's
 segments show emojis rather than topic text (topics are far too long to fit on a wedge); the
 real topic is revealed when it stops.
+
+The cursor trail is a tiny Eulerian fluid sim: moving the pointer injects velocity into a
+coarse grid, and droplets are advected through that field with drag and dissipation — so the
+ink swirls and curls like liquid rather than just following you. It takes its colour from
+whoever is signed in on that screen. All motion respects `prefers-reduced-motion`.
 
 Chosen identity lives in `localStorage`; everything else lives in the database, so the board
 looks the same on a laptop, a phone, or a browser you've never opened it in before.
