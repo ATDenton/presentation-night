@@ -532,7 +532,7 @@ const FLUID = (() => {
     DYE_RES: MOBILE ? 512 : 1024,
     VEL_DISS: 0.18, DYE_DISS: 1.05,
     PRESSURE: 0.8, PRESSURE_ITER: MOBILE ? 22 : 28,
-    CURL: 30,
+    CURL: 24,
     SPLAT_RADIUS: 0.0023,
     SPLAT_FORCE: 6000
   };
@@ -816,12 +816,30 @@ void main(){
     blit(velocity.write); velocity.swap();
 
     P_adv.bind();
-    gl.uniform2f(P_adv.u.texelSize, 1 / dye.read.w, 1 / dye.read.h);
+    /* displacement scales with the SIM grid regardless of target resolution,
+       otherwise dye lags behind the water carrying it */
+    gl.uniform2f(P_adv.u.texelSize, vtw, vth);
     gl.uniform1i(P_adv.u.uVelocity, velocity.read.attach(0));
     gl.uniform1i(P_adv.u.uSource, dye.read.attach(1));
     gl.uniform1f(P_adv.u.dt, dt);
     gl.uniform1f(P_adv.u.dissipation, CFG.DYE_DISS);
     blit(dye.write); dye.swap();
+
+    /* hard no-flow walls: without them the mirrored edges pump
+       edge vortices into an upward jet through the middle */
+    walls(velocity.read);
+  }
+
+  function walls(f) {
+    const t = 1;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, f.fbo);
+    gl.viewport(0, 0, f.w, f.h);
+    gl.enable(gl.SCISSOR_TEST);
+    gl.scissor(0, 0, f.w, t);          gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.scissor(0, f.h - t, f.w, t);    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.scissor(0, 0, t, f.h);          gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.scissor(f.w - t, 0, t, f.h);    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.disable(gl.SCISSOR_TEST);
   }
 
   function render() {
