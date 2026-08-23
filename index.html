@@ -4,116 +4,150 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aaron &amp; Chloë Presentation Night</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,450..700;1,9..144,450..700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#12101a;
-    --bg2:#1b1727;
-    --card:#221d33;
-    --card2:#2b2542;
-    --line:#3a3253;
-    --ink:#f2eefb;
-    --muted:#a79dc4;
+    --bg:#100d18;
+    --bg2:#181428;
+    --card:rgba(41,33,64,.66);
+    --card2:rgba(53,43,82,.6);
+    --line:rgba(255,255,255,.09);
+    --line2:rgba(255,255,255,.18);
+    --ink:#f4f0fc;
+    --muted:#a89ec6;
     --accent:#ffb454;     /* Aaron */
     --accent2:#ff6b9d;    /* Chloë */
+    --violet:#8b7cf6;
     --ok:#6ee7a8;
-    --radius:16px;
+    --radius:20px;
     --font:ui-rounded,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+    --display:"Fraunces",ui-serif,Georgia,serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:
-      radial-gradient(1100px 700px at 12% -10%, #3a2a5e 0%, transparent 60%),
-      radial-gradient(900px 600px at 100% 0%, #5c2a48 0%, transparent 55%),
-      var(--bg);
+    background:var(--bg);
     color:var(--ink);
     font-family:var(--font);
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:28px 18px 80px}
 
-  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:26px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand .dot{width:38px;height:38px;border-radius:12px;flex:none;
+  /* ---- aurora sky ---- */
+  .sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .sky span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.42;will-change:transform}
+  .sky .s1{width:56vmax;height:56vmax;left:-18vmax;top:-20vmax;background:#4a2f86;animation:drift1 26s ease-in-out infinite alternate}
+  .sky .s2{width:48vmax;height:48vmax;right:-16vmax;top:-14vmax;background:#8c2a55;animation:drift2 31s ease-in-out infinite alternate}
+  .sky .s3{width:40vmax;height:40vmax;left:30vw;bottom:-24vmax;background:#1d4f63;opacity:.3;animation:drift3 37s ease-in-out infinite alternate}
+  @keyframes drift1{to{transform:translate3d(9vmax,7vmax,0) scale(1.12)}}
+  @keyframes drift2{to{transform:translate3d(-8vmax,9vmax,0) scale(1.08)}}
+  @keyframes drift3{to{transform:translate3d(6vmax,-8vmax,0) scale(1.15)}}
+  body::after{ /* grain */
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:28px 18px 80px}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand .dot{width:46px;height:46px;border-radius:15px;flex:none;
     background:linear-gradient(140deg,var(--accent),var(--accent2));
-    display:grid;place-items:center;font-size:20px}
-  .brand h1{font-size:19px;margin:0;letter-spacing:-.01em}
-  .brand small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+    display:grid;place-items:center;font-size:24px;
+    box-shadow:0 10px 28px -8px rgba(255,130,120,.55), inset 0 2px 0 rgba(255,255,255,.4)}
+  .brand h1{font-family:var(--display);font-weight:600;font-size:22px;margin:0;letter-spacing:-.01em}
+  .brand small{display:block;color:var(--muted);font-weight:500;font-size:12.5px;margin-top:3px}
   .whotag{font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     padding:7px 8px 7px 14px;border-radius:999px;display:flex;align-items:center;gap:9px}
   .whotag b{color:var(--ink)}
-  .live{width:8px;height:8px;border-radius:50%;background:#6b6482;flex:none}
+  .live{width:8px;height:8px;border-radius:50%;background:#6b6482;flex:none;transition:.3s}
   .live.on{background:var(--ok);box-shadow:0 0 0 3px rgba(110,231,168,.18)}
 
-  .panel{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);
-    border-radius:var(--radius);padding:26px}
-  .panel h2{margin:0 0 6px;font-size:19px}
-  .panel p.sub{margin:0 0 20px;color:var(--muted);font-size:13.5px;line-height:1.55}
+  .panel{background:var(--card);border:1px solid var(--line);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:var(--radius);padding:28px;
+    box-shadow:0 24px 60px -24px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.06)}
+  .panel h2{font-family:var(--display);font-weight:600;margin:0 0 6px;font-size:21px}
+  .panel p.sub{margin:0 0 22px;color:var(--muted);font-size:13.5px;line-height:1.55}
 
-  button{font:inherit;cursor:pointer;border-radius:11px;border:1px solid transparent;transition:.15s}
+  button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid transparent;transition:.18s}
+  button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
   button:disabled{opacity:.42;cursor:not-allowed}
   .btn{background:linear-gradient(140deg,var(--accent),var(--accent2));color:#2a1305;font-weight:700;
-    padding:13px 22px;font-size:15px;border:none}
-  .btn:not(:disabled):hover{filter:brightness(1.08)}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
-  .btn.ghost:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}
+    padding:13px 24px;font-size:15px;border:none;
+    box-shadow:0 12px 28px -10px rgba(255,110,140,.5), inset 0 1px 0 rgba(255,255,255,.35)}
+  .btn:not(:disabled):hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn:not(:disabled):active{transform:translateY(0) scale(.98)}
+  .btn.ghost{background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line);font-weight:600}
+  .btn.ghost:not(:disabled):hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
   .btn.sm{padding:8px 14px;font-size:12.5px}
 
   /* who-are-you */
-  .seats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .seats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:620px){.seats{grid-template-columns:1fr}}
-  .seat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:26px 20px;
-    color:var(--ink);cursor:pointer;display:block;width:100%;text-align:center}
-  .seat .who{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em}
-  .seat .tag{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px}
-  .seat[data-slot=a]:hover{border-color:var(--accent)}
+  .seat{background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:16px;padding:30px 20px;color:var(--ink);cursor:pointer;display:block;width:100%;text-align:center;
+    box-shadow:0 16px 40px -20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.07)}
+  .seat .who{display:block;font-family:var(--display);font-size:29px;font-weight:600;letter-spacing:-.02em}
+  .seat .tag{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+  .seat[data-slot=a]:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 20px 44px -18px rgba(255,180,84,.35)}
   .seat[data-slot=a]:hover .who{color:var(--accent)}
-  .seat[data-slot=b]:hover{border-color:var(--accent2)}
+  .seat[data-slot=b]:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 20px 44px -18px rgba(255,107,157,.35)}
   .seat[data-slot=b]:hover .who{color:var(--accent2)}
 
   /* board */
-  .board{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .roundbar{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
+  .weekchip{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.02em;
+    background:linear-gradient(140deg,rgba(255,180,84,.16),rgba(255,107,157,.16));
+    border:1px solid rgba(255,160,140,.3);padding:6px 16px;border-radius:999px}
+  .roundbar .meta{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:720px){.board{grid-template-columns:1fr}}
-  .pcard{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);
-    border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;min-height:236px;
-    position:relative;overflow:hidden}
-  .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.35}
-  #cardA::before{background:var(--accent)}
-  #cardB::before{background:var(--accent2)}
+  .pcard{background:var(--card);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;min-height:244px;
+    position:relative;overflow:hidden;
+    box-shadow:0 24px 60px -26px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06);
+    transition:border-color .3s}
+  .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.4}
+  #cardA::before{background:linear-gradient(90deg,var(--accent),transparent)}
+  #cardB::before{background:linear-gradient(270deg,var(--accent2),transparent)}
   .pcard.mine::before{opacity:1;height:4px}
-  .pcard.mine{border-color:rgba(255,255,255,.16)}
-  .pcard .name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
-  .pcard .name .n{font-weight:800;font-size:16px;letter-spacing:-.01em}
+  .pcard.mine{border-color:rgba(255,255,255,.17)}
+  .pcard .name{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px}
+  .pcard .name .n{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
   #cardA .name .n{color:var(--accent)}
   #cardB .name .n{color:var(--accent2)}
   .pill{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-    border:1px solid var(--line);padding:4px 9px;border-radius:999px;white-space:nowrap}
-  .pill.you{color:var(--ink);border-color:rgba(255,255,255,.28)}
-  .topic{flex:1;display:flex;align-items:center;font-size:23px;line-height:1.32;font-weight:700;
-    letter-spacing:-.015em;min-height:96px;word-break:break-word}
-  .topic.empty{color:#635b7d;font-weight:600;font-size:17px;font-style:italic}
-  .topic.rolling{color:var(--muted);font-weight:600;font-size:19px;filter:blur(.25px)}
+    border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .pill.you{color:var(--ink);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.05)}
+  .topic{flex:1;display:flex;align-items:center;font-family:var(--display);font-weight:550;
+    font-size:clamp(19px,2.3vw,25px);line-height:1.38;letter-spacing:-.01em;min-height:96px;word-break:break-word}
+  .topic.empty{color:#7d74a0;font-weight:450;font-style:italic;font-size:16.5px;font-family:var(--font)}
   .stamp{font-size:11.5px;color:var(--muted);margin-top:14px;min-height:16px}
 
-  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 0}
   .status{font-size:13px;color:var(--muted);margin-left:auto;text-align:right}
 
-  .roundbar{display:flex;align-items:baseline;gap:10px;margin:26px 0 14px}
-  .roundbar h2{margin:0;font-size:15px;letter-spacing:.02em}
-  .roundbar .meta{font-size:12.5px;color:var(--muted);margin-left:auto}
-
-  details.hist{margin-top:30px;border-top:1px solid var(--line);padding-top:18px}
-  details.hist summary{cursor:pointer;font-size:13.5px;color:var(--muted);list-style:none}
+  details.hist{margin-top:32px;border-top:1px solid var(--line);padding-top:20px}
+  details.hist summary{cursor:pointer;font-size:13.5px;color:var(--muted);list-style:none;transition:.2s}
+  details.hist summary:hover{color:var(--ink)}
   details.hist summary::-webkit-details-marker{display:none}
   details.hist summary::before{content:"▸ ";color:var(--accent)}
   details.hist[open] summary::before{content:"▾ "}
-  .hrow{display:grid;grid-template-columns:56px 1fr 1fr;gap:12px;padding:12px 0;
-    border-bottom:1px solid rgba(58,50,83,.5);font-size:13.5px;align-items:start}
+  .hrow{display:grid;grid-template-columns:56px 1fr 1fr;gap:14px;padding:14px 10px;margin:0 -10px;
+    border-bottom:1px solid rgba(255,255,255,.05);font-size:13.5px;align-items:start;border-radius:10px;transition:.15s}
+  .hrow:hover{background:rgba(255,255,255,.03)}
   .hrow .rn{color:var(--muted);font-family:ui-monospace,Menlo,monospace;font-size:12px;padding-top:2px}
-  .hrow b{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
-  .hrow .ha b{color:var(--accent)} .hrow .hb b{color:var(--accent2)}
+  .hrow b{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+  .hrow b::before{content:"";width:7px;height:7px;border-radius:50%;flex:none}
+  .hrow .ha b{color:var(--accent)} .hrow .ha b::before{background:var(--accent)}
+  .hrow .hb b{color:var(--accent2)} .hrow .hb b::before{background:var(--accent2)}
   @media(max-width:620px){.hrow{grid-template-columns:44px 1fr}.hrow .hb{grid-column:2}}
 
   .tools{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
@@ -122,14 +156,48 @@
   .err code{background:rgba(0,0,0,.3);padding:2px 5px;border-radius:4px;font-size:12.5px}
   .hint{font-size:12px;color:var(--muted);margin-top:16px;line-height:1.5;text-align:center}
   .hide{display:none !important}
+
+  /* ---- wheel overlay ---- */
+  #wheelOverlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;
+    background:rgba(10,8,16,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    animation:fadein .3s ease}
+  @keyframes fadein{from{opacity:0}}
+  .wheelbox{text-align:center;padding:20px;max-width:94vw;animation:rise .45s cubic-bezier(.2,1.2,.4,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(22px) scale(.96)}}
+  .wheeltitle{font-family:var(--display);font-weight:600;font-size:clamp(21px,3vw,29px);margin-bottom:22px;letter-spacing:-.01em}
+  .wheelstage{position:relative;width:min(76vw,330px);margin:0 auto}
+  .pointer{position:absolute;top:-10px;left:50%;width:0;height:0;z-index:3;
+    border:13px solid transparent;border-top:24px solid #fff;transform-origin:50% 4px;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
+  body.spinning .pointer{animation:tick .11s linear infinite alternate}
+  @keyframes tick{from{transform:translateX(-50%) rotate(-9deg)}to{transform:translateX(-50%) rotate(9deg)}}
+  #wheelSvg{width:100%;height:auto;display:block;
+    filter:drop-shadow(0 26px 70px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(139,124,246,.18))}
+  .hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
+    width:62px;height:62px;border-radius:50%;
+    background:linear-gradient(140deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-size:27px;
+    box-shadow:0 8px 22px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4)}
+  .wheelresult{min-height:60px;margin:22px auto 0;max-width:520px;
+    font-size:15px;color:var(--muted);line-height:1.5;
+    opacity:0;transform:translateY(10px);transition:.45s cubic-bezier(.2,1,.4,1)}
+  .wheelresult b{display:block;margin-top:6px;font-family:var(--display);font-weight:600;
+    font-size:clamp(18px,2.6vw,24px);color:var(--ink);letter-spacing:-.01em;line-height:1.35}
+  .wheelresult.show{opacity:1;transform:none}
+  canvas.confetti{position:fixed;inset:0;z-index:60;pointer-events:none}
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  }
 </style>
 </head>
 <body>
+<div class="sky"><span class="s1"></span><span class="s2"></span><span class="s3"></span></div>
 <div class="wrap">
 
   <header class="top">
     <div class="brand">
-      <div class="dot">🎲</div>
+      <div class="dot">🎡</div>
       <div>
         <h1>Aaron &amp; Chloë Presentation Night</h1>
         <small>one random topic each, every week</small>
@@ -160,7 +228,7 @@
   <!-- BOARD -->
   <section id="board" class="hide">
     <div class="roundbar">
-      <h2 id="roundTitle">Week 1</h2>
+      <span class="weekchip" id="roundTitle">Week 1</span>
       <div class="meta" id="poolMeta"></div>
     </div>
 
@@ -178,7 +246,7 @@
     </div>
 
     <div class="controls">
-      <button class="btn" id="spinBtn">Spin my topic</button>
+      <button class="btn" id="spinBtn">Spin the wheel</button>
       <button class="btn ghost" id="nextBtn">Start next week</button>
       <div class="status" id="statusMsg"></div>
     </div>
@@ -194,6 +262,22 @@
     </div>
   </section>
 
+</div>
+
+<!-- WHEEL OVERLAY -->
+<div id="wheelOverlay" class="hide">
+  <div class="wheelbox">
+    <div class="wheeltitle" id="wheelTitle"></div>
+    <div class="wheelstage">
+      <div class="pointer"></div>
+      <svg id="wheelSvg" viewBox="0 0 300 300">
+        <circle cx="150" cy="150" r="147" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="3"/>
+        <g id="wheelRot"></g>
+      </svg>
+      <div class="hub">🎲</div>
+    </div>
+    <div class="wheelresult" id="wheelResult"></div>
+  </div>
 </div>
 
 <script type="module">
@@ -221,6 +305,7 @@ const ROOM   = "aaron-and-chloe-presentation-night";
 
 const $ = id => document.getElementById(id);
 const fatal = msg => { $("fatal").innerHTML = `<div class="err">${msg}</div>`; };
+const motionOK = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- topic identity: stable hash, safe to reorder the list ---------- */
 const tid = s => {
@@ -360,54 +445,157 @@ $("resetUsedBtn").addEventListener("click", () => {
   });
 });
 
-/* ---------- slot-machine animation ---------- */
-function rollTo(slot, finalText) {
-  const el = $("topic" + slot.toUpperCase());
-  const token = ++anim[slot];
-  const start = performance.now(), DUR = 2400;
-  el.classList.remove("empty");
-  el.classList.add("rolling");
+/* ============================================================
+   THE WHEEL
+   Plays on whichever screen sees a fresh topic arrive — so a spin
+   on one phone rolls out on both screens at once. Segments carry
+   emojis rather than topic text (topics are far too long to fit),
+   the real topic is revealed when the wheel stops.
+   ============================================================ */
+const WHEEL_N     = 12;
+const SPIN_MS     = 4300;
+const WHEEL_EMOJI = ["🐙","🚀","🏛️","🧠","🎭","🌍","🎲","🔮","🍿","⚡","🗝️","🌈","🧪","🐉","🦖","🎪"];
+const SEG_COLORS  = ["#ffb454","#ff6b9d","#8b7cf6","#4cc9f0","#6ee7a8","#ffd166",
+                     "#f472b6","#a78bfa","#38bdf8","#fb7185","#facc15","#34d399"];
 
-  const land = () => {
-    if (token !== anim[slot]) return;                 // a newer roll took over
-    anim[slot]++;                                     // stop this one's rAF loop
-    el.classList.remove("rolling");
-    el.textContent = finalText;
-    el.animate(
-      [{ transform: "scale(.94)", opacity: .4 }, { transform: "scale(1.02)", opacity: 1 }, { transform: "scale(1)" }],
-      { duration: 420, easing: "cubic-bezier(.2,1.4,.4,1)" }
-    );
-  };
-  // Safety net: rAF is suspended in background tabs, so a roll that starts while
-  // this screen is hidden would otherwise freeze on a random topic. Timers still fire.
-  setTimeout(land, DUR + 200);
+let wheelToken = 0;
 
+const polar = (r, deg) => {
+  const a = (deg - 90) * Math.PI / 180;
+  return [150 + r * Math.cos(a), 150 + r * Math.sin(a)];
+};
+const wedgePath = (r, a0, a1) => {
+  const [x0, y0] = polar(r, a0), [x1, y1] = polar(r, a1);
+  return `M 150 150 L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+};
+
+function buildWheel() {
+  const step = 360 / WHEEL_N;
+  const emojis = [...WHEEL_EMOJI].sort(() => Math.random() - .5);
+  let paths = "", icons = "";
+  for (let i = 0; i < WHEEL_N; i++)
+    paths += `<path d="${wedgePath(146, i * step - step / 2, i * step + step / 2)}"
+      fill="${SEG_COLORS[i % SEG_COLORS.length]}" stroke="#14101f" stroke-width="2"/>`;
+  for (let i = 0; i < WHEEL_N; i++)
+    icons += `<text x="150" y="47" transform="rotate(${i * step},150,150)"
+      text-anchor="middle" dominant-baseline="central" font-size="30">${emojis[i]}</text>`;
+  return { inner: paths + icons, step };
+}
+
+function startWheel(slot, topic) {
+  const token = ++wheelToken;
+  const ov = $("wheelOverlay");
+  $("wheelTitle").textContent =
+    slot === mySlot ? "Spinning your topic…" : `${PEOPLE[slot]} is spinning…`;
+  const res = $("wheelResult");
+  res.classList.remove("show");
+  res.innerHTML = "";
+
+  const { inner, step } = buildWheel();
+  const rot = $("wheelRot");
+  rot.innerHTML = inner;
+  rot.style.transition = "none";
+  rot.style.transform  = "rotate(0deg)";
+
+  ov.classList.remove("hide");
+  document.body.classList.add("spinning");
+
+  const turns = 5 + Math.floor(Math.random() * 3);
+  const jitter = (Math.random() - .5) * step * .55;
+  const target = turns * 360 + ((360 - (Math.floor(Math.random() * WHEEL_N)) * step) % 360) + jitter;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (token !== wheelToken) return;
+    rot.style.transition = `transform ${SPIN_MS}ms cubic-bezier(.12,.75,.14,1)`;
+    rot.style.transform  = `rotate(${target}deg)`;
+  }));
+
+  setTimeout(() => {
+    if (token !== wheelToken) return;
+    document.body.classList.remove("spinning");
+    const norm   = ((target % 360) + 360) % 360;
+    const landed = Math.round(((360 - norm) % 360) / step) % WHEEL_N;
+    const wedge  = rot.querySelectorAll("path")[landed];
+    if (wedge) { wedge.style.filter = "brightness(1.35)"; wedge.style.stroke = "#fff"; }
+    applyTopic(slot, topic);                          // card behind the overlay catches up
+    res.innerHTML = (slot === mySlot ? "You got:" : `${esc(PEOPLE[slot])} got:`) +
+                    `<b>${esc(topic)}</b>`;
+    res.classList.add("show");
+    burstConfetti();
+    setTimeout(() => {
+      if (token !== wheelToken) return;
+      ov.classList.add("hide");
+    }, 2100);
+  }, SPIN_MS + 150);
+}
+
+/* ---------- confetti ---------- */
+function burstConfetti() {
+  if (!motionOK) return;
+  const c = document.createElement("canvas");
+  c.className = "confetti";
+  document.body.appendChild(c);
+  const dpr = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  const ctx = c.getContext("2d");
+  ctx.scale(dpr, dpr);
+  const COLORS = ["#ffb454", "#ff6b9d", "#8b7cf6", "#6ee7a8", "#ffd166", "#4cc9f0"];
+  const parts = Array.from({ length: 130 }, () => ({
+    x: W / 2 + (Math.random() - .5) * 60,
+    y: H * .38,
+    vx: (Math.random() - .5) * 15,
+    vy: -5 - Math.random() * 9,
+    g: .22 + Math.random() *.09,
+    s: 4 + Math.random() * 5,
+    r: Math.random() * Math.PI * 2,
+    vr: (Math.random() - .5) * .3,
+    col: COLORS[(Math.random() * COLORS.length) | 0]
+  }));
+  const t0 = performance.now();
   (function frame(now) {
-    if (token !== anim[slot]) return;                 // superseded
-    if (now - start >= DUR) return land();
-    const eased = 1 - Math.pow(1 - (now - start) / DUR, 3);   // slow down towards the end
-    const gap = 45 + eased * 320;
-    if (now - (frame.last || 0) > gap) {
-      el.textContent = TOPICS[Math.floor(Math.random() * TOPICS.length)];
-      frame.last = now;
+    const el = now - t0;
+    ctx.clearRect(0, 0, W, H);
+    let alive = false;
+    ctx.globalAlpha = Math.max(0, 1 - el / 2300);
+    for (const p of parts) {
+      p.x += p.vx; p.vy += p.g; p.y += p.vy; p.vx *= .985; p.r += p.vr;
+      if (p.y < H + 20) {
+        alive = true;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .62);
+        ctx.restore();
+      }
     }
-    requestAnimationFrame(frame);
-  })(start);
+    ctx.globalAlpha = 1;
+    if (alive && el < 2400) requestAnimationFrame(frame); else c.remove();
+  })(t0);
+}
+
+/* ---------- card painting ---------- */
+function applyTopic(slot, topic) {
+  anim[slot]++;
+  const el = $("topic" + slot.toUpperCase());
+  el.classList.remove("empty");
+  el.textContent = topic;
+  if (motionOK) el.animate(
+    [{ transform: "scale(.94)", opacity: .4 }, { transform: "scale(1.02)", opacity: 1 }, { transform: "scale(1)" }],
+    { duration: 420, easing: "cubic-bezier(.2,1.4,.4,1)" }
+  );
 }
 
 function paint(slot, topic) {
   const el = $("topic" + slot.toUpperCase());
   const first = !booted[slot];
   booted[slot] = true;
-  if (!first && shown[slot] === (topic || null)) return;
+  const prev = shown[slot];
   shown[slot] = topic || null;
+  if (!first && prev === (topic || null)) return;
   if (topic) {
-    // animate only for topics that land while we're watching, not on page load
-    if (first) { anim[slot]++; el.classList.remove("empty", "rolling"); el.textContent = topic; }
-    else rollTo(slot, topic);
+    // wheel only for reveals that happen while we're watching, not on page load
+    if (first || !motionOK) applyTopic(slot, topic);
+    else startWheel(slot, topic);
   } else {
-    anim[slot]++;                                     // cancel any running roll
-    el.classList.remove("rolling");
+    anim[slot]++;                                     // cancel anything running
     el.classList.add("empty");
     el.textContent = "hasn't spun yet…";
   }
@@ -431,7 +619,7 @@ function render() {
 
   $("roundTitle").textContent = "Week " + (d.round || 1);
   const usedCount = Object.keys(d.used || {}).length;
-  $("poolMeta").textContent = `${TOPICS.length - usedCount} of ${TOPICS.length} topics left in the pool`;
+  $("poolMeta").textContent = `${TOPICS.length - usedCount} of ${TOPICS.length} topics left`;
 
   for (const slot of ["a", "b"]) {
     const p = players[slot] || {};
@@ -447,7 +635,7 @@ function render() {
   const them = mySlot === "a" ? "b" : "a";
   const theirs = players[them]?.topicId;
   $("spinBtn").disabled = !!mine;
-  $("spinBtn").textContent = mine ? "You've spun" : "Spin my topic";
+  $("spinBtn").textContent = mine ? "You've spun" : "Spin the wheel";
   $("rerollBtn").classList.toggle("hide", !mine);
   $("statusMsg").textContent =
     mine && theirs ? "You're both in — go make some slides." :
