@@ -64,10 +64,11 @@ segments show emojis rather than topic text (topics are far too long to fit on a
 real topic is revealed when it stops.
 
 The cursor trail is a proper Navier–Stokes fluid simulation running on the GPU (WebGL2):
-the pointer injects velocity into a velocity field, which is advected, pressure-projected and
-spun up with vorticity confinement — so moving the mouse tears open the surface of the page
-like water, dragging luminescent dye in whoever's colour is signed in. Browsers without WebGL2
-fall back to a lightweight particle stream. All motion respects `prefers-reduced-motion`.
+the pointer injects velocity into a velocity field, which is advected, pressure-projected,
+spun up with vorticity confinement, then shaded by its own gradient so the surface catches
+light like a real liquid — moving the mouse tears the page open like water and drags
+luminescent dye in whoever's colour is signed in. Browsers without WebGL2 fall back to a
+lightweight particle stream. All motion respects `prefers-reduced-motion`.
 
 Chosen identity lives in `localStorage`; everything else lives in the database, so the board
 looks the same on a laptop, a phone, or a browser you've never opened it in before.

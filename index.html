@@ -526,13 +526,15 @@ const FLUID = (() => {
       !gl.getExtension("EXT_color_buffer_half_float")) return false;
   const HF = gl.HALF_FLOAT;
 
+  const MOBILE = matchMedia("(pointer: coarse)").matches || innerWidth < 720;
   const CFG = {
-    SIM_RES: 96, DYE_RES: 512,
-    VEL_DISS: 0.12, DYE_DISS: 0.38,
-    PRESSURE: 0.8, PRESSURE_ITER: 20,
-    CURL: 26,
-    SPLAT_RADIUS: 0.0021,
-    SPLAT_FORCE: 5200
+    SIM_RES: MOBILE ? 96 : 160,
+    DYE_RES: MOBILE ? 512 : 1024,
+    VEL_DISS: 0.18, DYE_DISS: 1.05,
+    PRESSURE: 0.8, PRESSURE_ITER: MOBILE ? 22 : 28,
+    CURL: 30,
+    SPLAT_RADIUS: 0.0023,
+    SPLAT_FORCE: 6000
   };
 
   const VERT = `#version 300 es
@@ -649,10 +651,17 @@ void main(){
 
   const F_DISPLAY = `#version 300 es
 precision highp float; precision highp sampler2D;
-in vec2 vUv; out vec4 frag;
-uniform sampler2D uTexture;
+in vec2 vUv, vL, vR, vT, vB; out vec4 frag;
+uniform sampler2D uTexture; uniform vec2 texelSize;
 void main(){
-  vec3 c = texture(uTexture, vUv).rgb;
+  vec3 c   = texture(uTexture, vUv).rgb;
+  float lc = length(texture(uTexture, vL).rgb);
+  float rc = length(texture(uTexture, vR).rgb);
+  float tc = length(texture(uTexture, vT).rgb);
+  float bc = length(texture(uTexture, vB).rgb);
+  vec3 n = normalize(vec3(rc - lc, tc - bc, length(texelSize)));
+  float light = clamp(dot(n, vec3(0.35, 0.4, 1.0)) + 0.72, 0.72, 1.25);
+  c *= light;
   c = 1.45 * pow(c, vec3(0.82));
   float a = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
   frag = vec4(c, a);
@@ -817,6 +826,7 @@ void main(){
 
   function render() {
     P_disp.bind();
+    gl.uniform2f(P_disp.u.texelSize, 1 / dye.read.w, 1 / dye.read.h);
     gl.uniform1i(P_disp.u.uTexture, dye.read.attach(0));
     blit(null);
   }
@@ -825,23 +835,27 @@ void main(){
     const ar = canvas.width / canvas.height;
     return ar > 1 ? r * ar : r;
   }
-  function splat(x, y, dx, dy) {
+  function splatStep(x, y, dx, dy) {
     const col = hexRgb(trailHex);
     P_splat.bind();
     gl.uniform1f(P_splat.u.aspectRatio, canvas.width / canvas.height);
     gl.uniform2f(P_splat.u.point, x, y);
-    gl.uniform1f(P_splat.u.radius, correctRadius(CFG.SPLAT_RADIUS));
 
+    gl.uniform1f(P_splat.u.radius, correctRadius(CFG.SPLAT_RADIUS * 1.6));
     gl.uniform1i(P_splat.u.uTarget, velocity.read.attach(0));
     gl.uniform3f(P_splat.u.color, dx, dy, 0);
     blit(velocity.write); velocity.swap();
 
+    gl.uniform1f(P_splat.u.radius, correctRadius(CFG.SPLAT_RADIUS * 0.9));
     gl.uniform1i(P_splat.u.uTarget, dye.read.attach(0));
-    gl.uniform3f(P_splat.u.color, col.r * .22, col.g * .22, col.b * .22);
+    gl.uniform3f(P_splat.u.color, col.r * .16, col.g * .16, col.b * .16);
     blit(dye.write); dye.swap();
   }
 
-  let px = null, py = null, lastX = .5, lastY = .5, accX = 0, accY = 0, pend = false;
+  /* one splat per pointer event keeps the trail a continuous ribbon
+     instead of the blobby dots an accumulator produces */
+  const queue = [];
+  let px = null, py = null;
   addEventListener("pointermove", e => {
     const x = e.clientX / innerWidth;
     const y = 1 - e.clientY / innerHeight;
@@ -849,9 +863,9 @@ void main(){
       let dx = x - px, dy = y - py;
       if (canvas.width >= canvas.height) dx *= canvas.width / canvas.height;
       else                               dy *= canvas.height / canvas.width;
-      accX += dx; accY += dy; pend = true;
+      if (queue.length < 48) queue.push({ x, y, dx, dy });
     }
-    px = x; py = y; lastX = x; lastY = y;
+    px = x; py = y;
   }, { passive: true });
 
   let last = performance.now();
@@ -860,10 +874,9 @@ void main(){
     if (document.hidden) { last = now; return; }
     const dt = Math.min(Math.max((now - last) / 1000, .0001), .033);
     last = now;
-    if (pend) {
-      pend = false;
-      splat(lastX, lastY, accX * CFG.SPLAT_FORCE, accY * CFG.SPLAT_FORCE);
-      accX = 0; accY = 0;
+    while (queue.length) {
+      const q = queue.shift();
+      splatStep(q.x, q.y, q.dx * CFG.SPLAT_FORCE, q.dy * CFG.SPLAT_FORCE);
     }
     step(dt);
     render();
@@ -871,8 +884,8 @@ void main(){
 
   setTimeout(() => {
     for (let i = 0; i < 3; i++)
-      splat(.3 + Math.random() * .4, .35 + Math.random() * .3,
-            (Math.random() - .5) * 220, (Math.random() - .5) * 220);
+      splatStep(.3 + Math.random() * .4, .35 + Math.random() * .3,
+                (Math.random() - .5) * 140, (Math.random() - .5) * 140);
   }, 500);
 
   return true;
