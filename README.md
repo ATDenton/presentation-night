@@ -66,8 +66,10 @@ real topic is revealed when it stops.
 The cursor trail is a proper Navier–Stokes fluid simulation running on the GPU (WebGL2):
 the pointer injects velocity into a velocity field, which is advected, pressure-projected,
 spun up with vorticity confinement, then shaded by its own gradient so the surface catches
-light like a real liquid — moving the mouse tears the page open like water and drags
-luminescent dye in whoever's colour is signed in. Browsers without WebGL2 fall back to a
+light like a real liquid — the aurora background is rendered inside the same shader, so
+moving the mouse genuinely parts and drags it like water. The wake is tinted with whatever
+the background colour is at each point (and only glows strongly on fast movement), so it
+reads as the backdrop moving rather than ink drawn on top. Browsers without WebGL2 fall back to a
 lightweight particle stream. All motion respects `prefers-reduced-motion`.
 
 Chosen identity lives in `localStorage`; everything else lives in the database, so the board
