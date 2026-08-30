@@ -669,9 +669,18 @@ vec3 aurora(vec2 p){
 }
 
 void main(){
-  /* the water distorts whatever is behind it */
+  /* the water distorts whatever is behind it.
+     velocity.x was scaled by the aspect ratio when it was injected (so the
+     sim runs on a square grid) — undo that here, or the warp runs ~aspect
+     times too far horizontally and a diagonal pointer move bends the
+     background at a flatter angle than the cursor actually travelled.
+     Sample from behind the flow, not ahead of it: output(uv)=src(uv+d)
+     makes the image move by -d, which dragged the background against the
+     cursor instead of along with it. */
   vec2 vel = texture(uVelocity, vUv).xy;
-  vec2 wuv = clamp(vUv + vel * 0.00038, 0.0, 1.0);
+  vel = uAspect > 1.0 ? vec2(vel.x / uAspect, vel.y)
+                      : vec2(vel.x, vel.y * uAspect);
+  vec2 wuv = clamp(vUv - vel * 0.00038, 0.0, 1.0);
   vec3 c = aurora(vec2(wuv.x * uAspect, wuv.y));
 
   /* luminescent dye, lit by its own gradient */
