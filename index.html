@@ -182,12 +182,16 @@
   .wheeltitle{font-family:var(--display);font-weight:600;font-size:clamp(21px,3vw,29px);margin-bottom:22px;letter-spacing:-.01em}
   .wheelstage{position:relative;width:min(76vw,330px);margin:0 auto}
   .pointer{position:absolute;top:-10px;left:50%;width:0;height:0;z-index:3;
-    border:13px solid transparent;border-top:24px solid #fff;transform-origin:50% 4px;
+    border:13px solid transparent;border-top:24px solid #fff;
+    transform:translateX(-50%);transform-origin:50% 4px;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
   body.spinning .pointer{animation:tick .11s linear infinite alternate}
   @keyframes tick{from{transform:translateX(-50%) rotate(-9deg)}to{transform:translateX(-50%) rotate(9deg)}}
   #wheelSvg{width:100%;height:auto;display:block;
     filter:drop-shadow(0 26px 70px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(124,192,255,.18))}
+  /* SVG transforms default their origin to the viewBox corner, not the
+     element centre — without this the wheel orbits (0,0) instead of spinning */
+  #wheelRot{transform-box:view-box;transform-origin:150px 150px}
   .hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
     width:62px;height:62px;border-radius:50%;
     background:linear-gradient(140deg,var(--accent),var(--accent2));
