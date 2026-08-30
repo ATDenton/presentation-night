@@ -60,8 +60,8 @@ Both screens subscribe to one record. Every spin runs as a database transaction,
 simultaneous spins can't collide or hand out the same topic. The wheel reveal runs on a CSS
 transition with a timer fallback, because browsers suspend animation frames in background
 tabs — without it, a topic landing while your tab was hidden would freeze mid-spin. The wheel's
-segments show emojis rather than topic text (topics are far too long to fit on a wedge); the
-real topic is revealed when it stops.
+segments are plain colour — topics are far too long to fit on a wedge — and the real topic is
+revealed when it stops.
 
 The cursor trail is a proper Navier–Stokes fluid simulation running on the GPU (WebGL2):
 the pointer injects velocity into a velocity field, which is advected, pressure-projected,

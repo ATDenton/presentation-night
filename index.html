@@ -1075,7 +1075,6 @@ void main(){
    ============================================================ */
 const WHEEL_N     = 12;
 const SPIN_MS     = 4300;
-const WHEEL_EMOJI = ["🐙","🚀","🏛️","🧠","🎭","🌍","🎲","🔮","🍿","⚡","🗝️","🌈","🧪","🐉","🦖","🎪"];
 const SEG_COLORS  = ["#7cc0ff","#ffb083","#b79cff","#67e8f9","#86efac","#fcd34d",
                      "#93c5fd","#fda4af","#5eead4","#c4b5fd","#fbbf24","#7dd3fc"];
 
@@ -1092,15 +1091,11 @@ const wedgePath = (r, a0, a1) => {
 
 function buildWheel() {
   const step = 360 / WHEEL_N;
-  const emojis = [...WHEEL_EMOJI].sort(() => Math.random() - .5);
-  let paths = "", icons = "";
+  let paths = "";
   for (let i = 0; i < WHEEL_N; i++)
     paths += `<path d="${wedgePath(146, i * step - step / 2, i * step + step / 2)}"
       fill="${SEG_COLORS[i % SEG_COLORS.length]}" stroke="#0a1120" stroke-width="2"/>`;
-  for (let i = 0; i < WHEEL_N; i++)
-    icons += `<text x="150" y="47" transform="rotate(${i * step},150,150)"
-      text-anchor="middle" dominant-baseline="central" font-size="30">${emojis[i]}</text>`;
-  return { inner: paths + icons, step };
+  return { inner: paths, step };
 }
 
 function startWheel(slot, topic) {
